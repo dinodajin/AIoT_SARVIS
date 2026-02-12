@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>싸비스 - Voice Sync & Remote Control</title>
+    <style>
+        :root { --primary: #4a90e2; --success: #2ecc71; --danger: #e74c3c; --warning: #f39c12; --purple: #7c3aed; --bg: #f5f7fa; --card: #ffffff; --text: #333; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #d1d9e6; margin: 0; display: flex; justify-content: center; padding: 20px; color: var(--text); }
+        .app-container { width: 360px; height: 800px; background: var(--bg); border-radius: 40px; border: 12px solid #222; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        
+        /* 시작 화면 */
+        #scan-overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(135deg, #4a90e2, #7c3aed); 
+            z-index: 100; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            transition: 0.5s; 
+        }
+
+        .start-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px 20px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            width: 80%;
+        }
+
+        /* 헤더 및 탭 */
+        .status-bar { padding: 12px 20px; background: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; font-size: 12px; }
+        .user-label { background: #f0f4f8; color: #555; padding: 5px 15px; border-radius: 20px; font-weight: bold; border: 1px solid #d1d9e6; font-size: 11px; }
+        .nav-tabs { display: flex; background: #fff; border-bottom: 1px solid #ddd; }
+        .tab { flex: 1; padding: 15px 0; text-align: center; font-size: 14px; cursor: pointer; color: #888; }
+        .tab.active { color: var(--primary); border-bottom: 3px solid var(--primary); font-weight: bold; }
+        .tab.hidden { display: none; }
+
+        /* 컨텐츠 공통 */
+        .content-wrapper { flex: 1; overflow-y: auto; padding: 20px; }
+        .content { display: none; }
+        .content.active { display: block; }
+        .card { background: var(--card); padding: 22px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .ai-message-board { width: 100%; height: 180px; background: #222; border-radius: 18px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; box-sizing: border-box; }
+        .ai-status-text { color: var(--success); font-size: 18px; font-weight: bold; margin-bottom: 10px; min-height: 54px; line-height: 1.4; }
+        
+        .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: bold; color: white; cursor: pointer; margin-bottom: 10px; font-size: 16px; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-follow { background: var(--success); }
+        .btn-come { background: var(--primary); }
+        .btn-wait { background: #666; }
+
+        /* 상태 표시 박스 */
+        .status-box {
+            margin-bottom: 15px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #9ca3af;
+            flex-shrink: 0;
+        }
+
+        .status-dot.active {
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-box.tracking { color: #22c55e; background: #f0fdf4; border-color: #86efac; }
+        .status-box.moving { color: var(--primary); background: #eff6ff; border-color: #93c5fd; }
+        .status-box.aside { color: var(--purple); background: #faf5ff; border-color: #c4b5fd; }
+        .status-box.idle { color: #9ca3af; }
+
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-btn.primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .action-btn.success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .action-btn.danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .action-btn.outline {
+            background: #fff;
+            border: 2px solid #c7b8ff;
+            color: var(--purple);
+        }
+
+        .action-btn.outline:hover:not(:disabled) {
+            background: var(--purple);
+            color: #fff;
+        }
+
+        /* 음성 명령 스타일 */
+        .voice-status {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: 0.3s;
+        }
+
+        .voice-status.listening {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .voice-status.listening .voice-wave {
+            background: var(--primary);
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        .voice-status.active {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .voice-status.active .voice-wave {
+            background: var(--success);
+            animation: wave 0.8s ease-in-out infinite;
+        }
+
+        .voice-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            height: 40px;
+            margin-bottom: 12px;
+        }
+
+        .voice-wave {
+            width: 4px;
+            height: 16px;
+            background: #cbd5e1;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .voice-status.listening .voice-wave:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .voice-status.listening .voice-wave:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .voice-status.listening .voice-wave:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .voice-status.active .voice-wave:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .voice-status.active .voice-wave:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .voice-status.active .voice-wave:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 16px; }
+            50% { height: 32px; }
+        }
+
+        .voice-status-text {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .voice-status.listening .voice-status-text {
+            color: var(--primary);
+        }
+
+        .voice-status.active .voice-status-text {
+            color: var(--success);
+        }
+
+        /* 수동 제어 */
+        .manual-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .manual-btn {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .manual-btn:active {
+            background: #f0f0f0;
+            transform: scale(0.95);
+        }
+
+        .manual-btn.center {
+            font-size: 10px;
+            color: #aaa;
+            cursor: default;
+        }
+
+        /* 슬라이더 */
+        .slider-box {
+            margin-top: 12px;
+        }
+
+        .slider-box label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .slider-box input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-box input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .slider-box input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* 가동 범위 설정 */
+        .photo-space { width: 100%; height: 180px; background: #eee url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=400') center/cover; border-radius: 15px; position: relative; overflow: hidden; }
+        .cuboid-view { position: absolute; top: 30%; left: 25%; width: 50%; height: 40%; border: 2px solid var(--primary); background: rgba(74, 144, 226, 0.2); transition: 0.3s; }
+
+        /* 설정 화면 전용 스타일 */
+        .profile-section {
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .profile-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+
+        .profile-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin: 20px 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .setting-item {
+            background: white;
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #f1f5f9;
+        }
+
+        .setting-item:active {
+            background: #f8fafc;
+            transform: scale(0.98);
+        }
+
+        .setting-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .setting-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .setting-info h4 {
+            margin: 0 0 3px 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .setting-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .setting-action {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .segment-control {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .segment-option {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .segment-option.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .danger-zone {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .danger-btn {
+            background: white;
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            border: 1px solid #fee2e2;
+            color: var(--danger);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .danger-btn:active {
+            background: #fef2f2;
+            transform: scale(0.98);
+        }
+
+        /* 프리셋 선택 드롭다운 */
+        .preset-selector {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .preset-selector:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .preset-selector.active {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .preset-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .preset-icon {
+            font-size: 18px;
+        }
+
+        .preset-name {
+            color: #1e293b;
+        }
+
+        .preset-dropdown {
+            position: absolute;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-top: 8px;
+            width: calc(100% - 40px);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .preset-dropdown.show {
+            display: block;
+        }
+
+        .preset-item {
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preset-item:hover {
+            background: #f8fafc;
+        }
+
+        .preset-item.selected {
+            background: #eff6ff;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .preset-item:last-child {
+            border-bottom: none;
+        }
+
+        .preset-item-info {
+            flex: 1;
+        }
+
+        .preset-item-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .preset-item-desc {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .preset-item-delete {
+            padding: 6px 12px;
+            background: #fee2e2;
+            color: var(--danger);
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .preset-item-delete:hover {
+            background: #fecaca;
+        }
+
+        /* 모달 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 320px;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-btn.cancel {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .modal-btn.confirm {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+
+        .preset-save-info {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div id="scan-overlay">
+        <div class="start-card">
+            <div style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">SARVIS</div>
+            <p style="font-size: 14px; opacity: 0.9; margin-bottom: 30px;">당신을 위한 스마트 보조 시스템</p>
+            
+            <button class="action-btn success" style="margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" onclick="simulateFail()">
+                얼굴 인식 회원 가입
+            </button>
+            
+            <div style="font-size: 12px; opacity: 0.7; cursor: pointer; text-decoration: underline;" onclick="simulateSuccess()">
+                게스트 모드로 시작
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <span>🔌 SARVIS Wired System</span>
+        <div class="user-label">👤 <span id="user-name-tag">미식별</span></div>
+    </div>
+
+    <div class="nav-tabs">
+        <div class="tab hidden" id="tab-btn-control" onclick="showTab('control', this)">제어</div>
+        <div class="tab hidden" id="tab-btn-settings" onclick="showTab('settings', this)">설정</div>
+    </div>
+
+    <div class="content-wrapper">
+        <div id="reg-face" class="content">
+            <div class="card">
+                <h3>1. 얼굴 등록</h3>
+                <div class="ai-message-board"><div id="ai-face-main" class="ai-status-text">대기 중</div></div>
+                <input type="text" id="input-name" placeholder="이름을 입력하세요" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; box-sizing:border-box; margin-bottom:15px;">
+                <button class="btn btn-come" onclick="startFaceScan()">인식 시작</button>
+            </div>
+        </div>
+
+        <div id="reg-voice" class="content">
+            <div class="card">
+                <h3>사용자 음성 등록</h3>
+                <div class="ai-message-board" style="background: #1a1a1a;"><div id="ai-voice-main" class="ai-status-text">음성 대기 중</div></div>
+                <button class="btn btn-come" onclick="startVoiceScan()">음성 등록 시작</button>
+                <button class="btn" style="background:none; color:#888; font-size:13px;" id="btn-skip-voice" onclick="skipVoice()">건너뛰기</button>
+            </div>
+        </div>
+
+        <div id="range-setup" class="content">
+            <div class="card">
+                <h3>3D 가동 범위 설정</h3>
+                <div class="photo-space"><div id="range-cuboid" class="cuboid-view"></div></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <div style="background:#f8f9fa; padding:10px; border-radius:12px; text-align:center;">
+                        <span style="font-size:10px; display:block; margin-bottom:5px;">가로 폭</span>
+                        <button onclick="adjustCuboid('w', 5)">+</button><button onclick="adjustCuboid('w', -5)">-</button>
+                    </div>
+                    <div style="background:#f8f9fa; padding:10px; border-radius:12px; text-align:center;">
+                        <span style="font-size:10px; display:block; margin-bottom:5px;">깊이(Z)</span>
+                        <button onclick="adjustCuboid('z', 5)">+</button><button onclick="adjustCuboid('z', -5)">-</button>
+                    </div>
+                </div>
+                <button class="btn btn-come" style="margin-top:15px;" onclick="finishRangeSetup(true)">설정 완료</button>
+                <button class="btn" style="background:none; color:var(--danger); font-size:13px;" onclick="finishRangeSetup(false)">건너뛰기 (장애물 충돌 위험)</button>
+            </div>
+        </div>
+
+        <div id="control" class="content">
+            <!-- 상태 표시 -->
+            <div class="status-box idle" id="face-follow-status">
+                <div class="status-dot" id="status-dot"></div>
+                <span id="status-text">현재 상태: 대기 중</span>
+            </div>
+
+            <!-- 음성 명령 제어 -->
+            <div class="card" style="padding: 18px 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 20px;">🎤</span>
+                        <span style="font-weight: 600; font-size: 15px;">음성 명령</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="voice-toggle" checked onchange="toggleVoiceCommand()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="voice-status listening" id="voice-status">
+                    <div class="voice-indicator">
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                    </div>
+                    <div class="voice-status-text" id="voice-status-text">"싸비스"를 불러주세요</div>
+                </div>
+
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
+                    <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; font-weight: 500;">
+                        💬 명령어 예시
+                    </div>
+                    <div style="font-size: 13px; color: #64748b; line-height: 2;">
+                        이리와, 따라와, 비켜봐, 정지
+                    </div>
+                </div>
+            </div>
+
+            <!-- 얼굴 추적 버튼 -->
+            <button class="action-btn success" id="btn-start-tracking" onclick="handleStartTracking()">
+                👁️ 얼굴 추적 시작
+            </button>
+            <button class="action-btn danger" id="btn-stop-tracking" onclick="handleStopTracking()" style="display: none;">
+                👁️ 얼굴 추적 중지
+            </button>
+
+            <!-- 메인 액션 버튼 -->
+            <button class="action-btn primary" id="btn-move-to-user" onclick="handleMoveToUser()">
+                🧭 사용자 위치로 이동
+            </button>
+            <button class="action-btn outline" id="btn-move-aside" onclick="handleMoveAside()" disabled>
+                👁️ 시야 비켜주기
+            </button>
+
+            <!-- 프리셋 선택 버튼 -->
+            <div style="position: relative;">
+                <button class="action-btn" style="background: linear-gradient(135deg, var(--purple), var(--primary)); color: white; display: flex; align-items: center; justify-content: space-between;" onclick="togglePresetSelectionDropdown()">
+                    <span>📋 프리셋 적용하기</span>
+                    <span id="preset-selection-arrow">▼</span>
+                </button>
+                <div class="preset-dropdown" id="preset-selection-dropdown" style="margin-top: 0;">
+                    <!-- 프리셋 목록이 동적으로 추가됩니다 -->
+                </div>
+            </div>
+
+            <!-- 고급 제어 (접기/펼치기) -->
+            <div class="card" style="padding: 18px 22px; cursor: pointer;" onclick="toggleAdvancedControl()">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 600; font-size: 15px;">고급 제어</span>
+                    </div>
+                    <span id="advanced-arrow" style="font-size: 18px; transition: 0.3s;">▼</span>
+                </div>
+            </div>
+
+            <!-- 수동 제어 패널 (숨김) -->
+            <div id="advanced-control-panel" style="display: none;">
+                <div class="card">
+                    <h3 style="margin-top:0; margin-bottom: 8px;">방향 제어</h3>
+
+                    <div class="manual-pad">
+                        <div></div>
+                        <div class="manual-btn" onclick="handleManualControl('up')">▲</div>
+                        <div></div>
+
+                        <div class="manual-btn" onclick="handleManualControl('left')">◀</div>
+                        <div class="manual-btn center">●</div>
+                        <div class="manual-btn" onclick="handleManualControl('right')">▶</div>
+
+                        <div></div>
+                        <div class="manual-btn" onclick="handleManualControl('down')">▼</div>
+                        <div></div>
+                    </div>
+
+                    <!-- 각도 슬라이더 -->
+                    <div class="slider-box">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <span style="align-self: flex-end;">좌우 각도</span>
+                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                <button id="preset-save-btn" onclick="handlePresetSaveOrUpdate()" style="padding: 4px 10px; font-size: 10px; background: var(--purple); color: white; border: none; border-radius: 6px; cursor: pointer; white-space: nowrap;">💾 프리셋 저장</button>
+                                <span id="angle-horizontal-val">0°</span>
+                            </div>
+                        </div>
+                        <input type="range" min="-90" max="90" value="0" id="angle-horizontal"
+                            oninput="updateAngle('horizontal', this.value)" style="margin-top: 8px;">
+                    </div>
+
+                    <div class="slider-box">
+                        <label>
+                            <span>위아래 각도</span>
+                            <span id="angle-vertical-val">0°</span>
+                        </label>
+                        <input type="range" min="-45" max="45" value="0" id="angle-vertical"
+                            oninput="updateAngle('vertical', this.value)">
+                    </div>
+
+                    <!-- 거리 슬라이더 -->
+                    <div class="slider-box">
+                        <label>
+                            <span>거리</span>
+                            <span id="distance-val">50cm</span>
+                        </label>
+                        <input type="range" min="0" max="200" value="50" step="5" id="distance"
+                            oninput="updateDistance(this.value)">
+                    </div>
+                </div>
+
+                <!-- 테스트 버튼 -->
+                <button class="action-btn" style="background: #f1f5f9; color: #64748b; font-size: 14px;" onclick="simulateWakeWord()">
+                    🧪 "싸비스" 호출 시뮬레이션
+                </button>
+            </div>
+        </div>
+
+        <div id="settings" class="content">
+            <!-- 프로필 섹션 -->
+            <div class="profile-section">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <h3 id="settings-user-name">게스트</h3>
+                    <p id="settings-user-type">게스트 사용자</p>
+                </div>
+            </div>
+
+            <!-- 인증 정보 관리 -->
+            <div class="section-title">🔐 인증 정보 관리</div>
+            
+            <div class="setting-item" onclick="openIndependentPage('voice')">
+                <div class="setting-item-left">
+                    <div class="setting-icon">🎤</div>
+                    <div class="setting-info">
+                        <h4>음성 재등록</h4>
+                        <p id="voice-reg-date">미등록</p>
+                    </div>
+                </div>
+                <div class="setting-action">재등록</div>
+            </div>
+
+            <div class="setting-item" onclick="alert('얼굴 재등록 기능')">
+                <div class="setting-item-left">
+                    <div class="setting-icon">👤</div>
+                    <div class="setting-info">
+                        <h4>얼굴 재등록</h4>
+                        <p id="face-reg-date">미등록</p>
+                    </div>
+                </div>
+                <div class="setting-action">재등록</div>
+            </div>
+
+            <!-- 로봇 동작 설정 -->
+            <div class="section-title">🤖 로봇 동작 설정</div>
+            
+            <div class="setting-item" onclick="openIndependentPage('range')">
+                <div class="setting-item-left">
+                    <div class="setting-icon">📐</div>
+                    <div class="setting-info">
+                        <h4>3D 가동 범위 재설정</h4>
+                        <p>안전한 이동을 위한 공간 설정</p>
+                    </div>
+                </div>
+                <div class="setting-action">→</div>
+            </div>
+
+            <div class="card" style="padding: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span style="font-weight: 600; font-size: 14px;">⚡ 추적 속도</span>
+                </div>
+                <div class="segment-control">
+                    <div class="segment-option" onclick="setSpeed(this, 'slow')">느림</div>
+                    <div class="segment-option active" onclick="setSpeed(this, 'normal')">보통</div>
+                    <div class="segment-option" onclick="setSpeed(this, 'fast')">빠름</div>
+                </div>
+            </div>
+
+            <!-- 프리셋 관리 -->
+            <div class="section-title">📋 프리셋 관리</div>
+            
+            <div class="setting-item" onclick="showTab('control', document.getElementById('tab-btn-control'))">
+                <div class="setting-item-left">
+                    <div class="setting-icon">⚙️</div>
+                    <div class="setting-info">
+                        <h4>저장된 프리셋</h4>
+                        <p id="preset-count">0개의 프리셋</p>
+                    </div>
+                </div>
+                <div class="setting-action">→</div>
+            </div>
+
+            <!-- 계정 관리 -->
+            <div class="section-title">⚙️ 계정 관리</div>
+            
+            <div class="setting-item">
+                <div class="setting-item-left">
+                    <div class="setting-icon">📊</div>
+                    <div class="setting-info">
+                        <h4>사용 기록 보기</h4>
+                    </div>
+                </div>
+                <div class="setting-action">→</div>
+            </div>
+
+            <!-- 위험 영역 -->
+            <div class="danger-zone">
+                <div class="danger-btn" onclick="handleLogout()">
+                    🚪 로그아웃
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 프리셋 저장 모달 -->
+<div class="modal" id="preset-modal">
+    <div class="modal-content">
+        <div class="modal-header">프리셋 저장</div>
+        <div class="preset-save-info">
+            현재 로봇의 위치, 각도, 거리 설정을 프리셋으로 저장할 수 있습니다.
+        </div>
+        <input type="text" class="modal-input" id="preset-name-input" placeholder="프리셋 이름 (예: 책상 앞, 소파 옆)">
+        <input type="text" class="modal-input" id="preset-desc-input" placeholder="설명 (선택사항)">
+        <div class="modal-buttons">
+            <button class="modal-btn cancel" onclick="closePresetModal()">취소</button>
+            <button class="modal-btn confirm" onclick="savePreset()">저장</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 상태 관리
+    let currentUser = { name: "게스트1", type: "guest" }; // guest 또는 registered
+    let isVoiceRegistered = false;
+    let isRangeSet = false;
+    let isInitialSetup = true;
+    let cw = 50, cz = 0;
+    
+    // 로봇 상태
+    let robotState = 'idle';
+    let faceTrackingMode = false;
+    let voiceCommandEnabled = true;
+    let advancedControlExpanded = false;
+    
+    // 로봇 설정
+    let currentSettings = {
+        angleHorizontal: 0,
+        angleVertical: 0,
+        distance: 50,
+        trackingSpeed: 'normal'
+    };
+    
+    // 프리셋 관리
+    let presets = [
+        { id: 1, name: "기본 설정", description: "초기 설정값", settings: { angleHorizontal: 0, angleVertical: 0, distance: 50, trackingSpeed: 'normal' } }
+    ];
+    let selectedPresetId = 1;
+    let presetDropdownOpen = false;
+    let presetSelectionDropdownOpen = false;
+    let isEditingPreset = false; // 프리셋 수정 모드 여부
+
+    function showTab(tabId, el) {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        if(el) el.classList.add('active');
+    }
+
+    function openIndependentPage(type) {
+        isInitialSetup = false;
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        if(type === 'voice') document.getElementById('reg-voice').classList.add('active');
+        if(type === 'range') document.getElementById('range-setup').classList.add('active');
+    }
+
+    function setAppState(state, name = "사용자", userType = "guest") {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        if(state === 'face_reg') document.getElementById('reg-face').classList.add('active');
+        else if(state === 'voice_reg') document.getElementById('reg-voice').classList.add('active');
+        else if(state === 'range_setup') document.getElementById('range-setup').classList.add('active');
+        else if(state === 'identified') {
+            currentUser = { name: name, type: userType };
+            updateUserInfo();
+            document.getElementById('tab-btn-control').classList.remove('hidden');
+            document.getElementById('tab-btn-settings').classList.remove('hidden');
+            showTab('control', document.getElementById('tab-btn-control'));
+        }
+    }
+
+    function updateUserInfo() {
+        document.getElementById('user-name-tag').innerText = currentUser.name;
+        document.getElementById('settings-user-name').innerText = currentUser.name;
+        
+        if (currentUser.type === 'guest') {
+            document.getElementById('settings-user-type').innerText = '게스트 사용자';
+            document.getElementById('voice-reg-date').innerText = '미등록';
+            document.getElementById('face-reg-date').innerText = '미등록';
+        } else {
+            const today = new Date().toISOString().split('T')[0].replace(/-/g, '.');
+            document.getElementById('settings-user-type').innerText = `등록일: ${today}`;
+            document.getElementById('voice-reg-date').innerText = `등록: ${today}`;
+            document.getElementById('face-reg-date').innerText = `등록: ${today}`;
+        }
+    }
+
+    function toggleAdvancedControl() {
+        advancedControlExpanded = !advancedControlExpanded;
+        const panel = document.getElementById('advanced-control-panel');
+        const arrow = document.getElementById('advanced-arrow');
+        
+        if (advancedControlExpanded) {
+            panel.style.display = 'block';
+            arrow.style.transform = 'rotate(180deg)';
+        } else {
+            panel.style.display = 'none';
+            arrow.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function adjustCuboid(axis, val) {
+        const box = document.getElementById('range-cuboid');
+        if(axis === 'w') cw = Math.min(Math.max(cw + val, 10), 90); 
+        else cz = Math.min(Math.max(cz + val, 0), 40);
+        box.style.width = cw + '%';
+        box.style.boxShadow = `0px 0px ${cz}px rgba(74,144,226,0.6)`;
+    }
+
+    function startFaceScan() {
+        const main = document.getElementById('ai-face-main');
+        main.innerText = "얼굴 인식 중..";
+        setTimeout(() => {
+            main.innerText = "인식 완료!";
+            setTimeout(() => setAppState('voice_reg'), 800);
+        }, 1000);
+    }
+
+    function startVoiceScan() {
+        const main = document.getElementById('ai-voice-main');
+        main.innerText = "음성 분석 중...";
+        setTimeout(() => {
+            main.innerText = "음성 등록 완료!";
+            isVoiceRegistered = true;
+            if(isInitialSetup) setTimeout(() => setAppState('range_setup'), 800);
+            else setTimeout(() => setAppState('identified', currentUser.name, currentUser.type), 800);
+        }, 1200);
+    }
+
+    function skipVoice() {
+        isVoiceRegistered = false;
+        if(isInitialSetup) setAppState('range_setup');
+        else setAppState('identified', currentUser.name, currentUser.type);
+    }
+
+    function finishRangeSetup(isSet) {
+        isRangeSet = isSet;
+        setAppState('identified', currentUser.name, currentUser.type);
+    }
+
+    function simulateSuccess() { 
+        isVoiceRegistered = false; 
+        isRangeSet = false;
+        document.getElementById('scan-overlay').style.display='none'; 
+        setAppState('identified', '게스트1', 'guest'); 
+    }
+    
+    function simulateFail() { 
+        isInitialSetup = true;
+        document.getElementById('scan-overlay').style.display='none'; 
+        setAppState('face_reg'); 
+    }
+
+    function handleLogout() {
+        if(confirm('로그아웃 하시겠습니까?')) {
+            location.reload();
+        }
+    }
+
+    // ===== 로봇 제어 기능 =====
+
+    function handleStartTracking() {
+        faceTrackingMode = true;
+        robotState = 'tracking';
+        updateControlUI();
+    }
+
+    function handleStopTracking() {
+        faceTrackingMode = false;
+        robotState = 'idle';
+        updateControlUI();
+    }
+
+    function handleMoveToUser() {
+        robotState = 'moving-to-user';
+        updateControlUI();
+        
+        setTimeout(() => {
+            if (faceTrackingMode) {
+                robotState = 'tracking';
+            } else {
+                robotState = 'idle';
+            }
+            updateControlUI();
+        }, 2000);
+    }
+
+    function handleMoveAside() {
+        robotState = 'moved-aside';
+        updateControlUI();
+    }
+
+    function handleManualControl(direction) {
+        console.log('수동 제어:', direction);
+    }
+
+    function updateControlUI() {
+        const statusBox = document.getElementById('face-follow-status');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const btnMoveAside = document.getElementById('btn-move-aside');
+        const btnMoveToUser = document.getElementById('btn-move-to-user');
+        const btnStartTracking = document.getElementById('btn-start-tracking');
+        const btnStopTracking = document.getElementById('btn-stop-tracking');
+        
+        if (faceTrackingMode) {
+            btnStartTracking.style.display = 'none';
+            btnStopTracking.style.display = 'block';
+        } else {
+            btnStartTracking.style.display = 'block';
+            btnStopTracking.style.display = 'none';
+        }
+        
+        let stateText = '';
+        let stateClass = '';
+        
+        switch(robotState) {
+            case 'tracking':
+                stateText = '얼굴 추적 중';
+                stateClass = 'tracking';
+                statusDot.classList.add('active');
+                break;
+            case 'moving-to-user':
+                stateText = '사용자 위치로 이동 중';
+                stateClass = 'moving';
+                statusDot.classList.add('active');
+                break;
+            case 'moved-aside':
+                stateText = '시야에서 비켜난 상태';
+                stateClass = 'aside';
+                statusDot.classList.add('active');
+                break;
+            case 'idle':
+            default:
+                stateText = '대기 중';
+                stateClass = 'idle';
+                statusDot.classList.remove('active');
+                break;
+        }
+        
+        statusText.textContent = '현재 상태: ' + stateText;
+        statusBox.className = 'status-box ' + stateClass;
+        
+        btnMoveAside.disabled = robotState === 'moved-aside';
+        btnMoveToUser.disabled = robotState === 'moving-to-user';
+    }
+
+    // ===== 음성 명령 기능 =====
+
+    let voiceState = 'listening';
+
+    function toggleVoiceCommand() {
+        const toggle = document.getElementById('voice-toggle');
+        voiceCommandEnabled = toggle.checked;
+        const voiceStatus = document.getElementById('voice-status');
+        const voiceStatusText = document.getElementById('voice-status-text');
+        
+        if (voiceCommandEnabled) {
+            voiceStatus.style.opacity = '1';
+            voiceStatus.style.pointerEvents = 'auto';
+            voiceState = 'listening';
+            voiceStatus.classList.add('listening');
+            voiceStatusText.textContent = '"싸비스"를 불러주세요';
+        } else {
+            voiceStatus.style.opacity = '0.5';
+            voiceStatus.style.pointerEvents = 'none';
+            voiceState = 'disabled';
+            voiceStatus.classList.remove('listening', 'active');
+            voiceStatusText.textContent = '음성 명령 비활성화됨';
+        }
+    }
+
+    function simulateWakeWord() {
+        if (!voiceCommandEnabled) {
+            alert('음성 명령이 비활성화되어 있습니다.');
+            return;
+        }
+        
+        const voiceStatus = document.getElementById('voice-status');
+        const voiceStatusText = document.getElementById('voice-status-text');
+        
+        voiceState = 'active';
+        voiceStatus.classList.remove('listening');
+        voiceStatus.classList.add('active');
+        voiceStatusText.textContent = '✓ 네, 말씀하세요!';
+        
+        setTimeout(() => {
+            executeVoiceCommand();
+        }, 2000);
+    }
+
+    function executeVoiceCommand() {
+        const voiceStatus = document.getElementById('voice-status');
+        const voiceStatusText = document.getElementById('voice-status-text');
+        
+        const commands = [
+            { 
+                text: '나를 따라와', 
+                action: () => {
+                    handleStartTracking();
+                    return '얼굴 추적을 시작합니다';
+                }
+            },
+            { 
+                text: '비켜줘', 
+                action: () => {
+                    handleMoveAside();
+                    return '시야에서 비켜납니다';
+                }
+            },
+            { 
+                text: '정지', 
+                action: () => {
+                    handleStopTracking();
+                    return '추적을 중지합니다';
+                }
+            },
+            { 
+                text: '여기 와', 
+                action: () => {
+                    handleMoveToUser();
+                    return '사용자 위치로 이동합니다';
+                }
+            }
+        ];
+        
+        const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+        
+        voiceState = 'processing';
+        voiceStatusText.textContent = `"${randomCommand.text}" 명령 인식!`;
+        
+        setTimeout(() => {
+            const resultMessage = randomCommand.action();
+            voiceStatusText.textContent = resultMessage;
+            
+            setTimeout(() => {
+                if (voiceCommandEnabled) {
+                    voiceState = 'listening';
+                    voiceStatus.classList.remove('active');
+                    voiceStatus.classList.add('listening');
+                    voiceStatusText.textContent = '"싸비스"를 불러주세요';
+                }
+            }, 1500);
+        }, 500);
+    }
+
+    function setSpeed(el, speed) {
+        document.querySelectorAll('.segment-option').forEach(opt => opt.classList.remove('active'));
+        el.classList.add('active');
+        currentSettings.trackingSpeed = speed;
+        console.log('추적 속도:', speed);
+    }
+
+    // ===== 설정 업데이트 =====
+
+    function updateAngle(type, value) {
+        if (type === 'horizontal') {
+            currentSettings.angleHorizontal = parseInt(value);
+            document.getElementById('angle-horizontal-val').innerText = value + '°';
+        } else {
+            currentSettings.angleVertical = parseInt(value);
+            document.getElementById('angle-vertical-val').innerText = value + '°';
+        }
+    }
+
+    function updateDistance(value) {
+        currentSettings.distance = parseInt(value);
+        document.getElementById('distance-val').innerText = value + 'cm';
+    }
+
+    function handlePresetSaveOrUpdate() {
+        if (isEditingPreset) {
+            // 수정 모드: 기존 프리셋 업데이트
+            updateExistingPreset();
+        } else {
+            // 저장 모드: 새 프리셋 생성
+            openSavePresetModal();
+        }
+    }
+
+    function updateExistingPreset() {
+        const preset = presets.find(p => p.id === selectedPresetId);
+        if (!preset) return;
+        
+        // 확인 없이 바로 업데이트
+        preset.settings = { ...currentSettings };
+        alert('수정이 완료되었습니다!');
+    }
+
+    function setPresetButtonMode(isEditing) {
+        isEditingPreset = isEditing;
+        const btn = document.getElementById('preset-save-btn');
+        
+        if (isEditing) {
+            btn.innerHTML = '✏️ 프리셋 수정';
+            btn.style.background = '#f59e0b'; // 주황색
+        } else {
+            btn.innerHTML = '💾 프리셋 저장';
+            btn.style.background = 'var(--purple)';
+        }
+    }
+
+    // ===== 프리셋 관리 =====
+
+    function togglePresetDropdown() {
+        presetDropdownOpen = !presetDropdownOpen;
+        const dropdown = document.getElementById('preset-dropdown');
+        const selector = document.getElementById('preset-selector');
+        
+        if (presetDropdownOpen) {
+            renderPresetList();
+            dropdown.classList.add('show');
+            selector.classList.add('active');
+        } else {
+            dropdown.classList.remove('show');
+            selector.classList.remove('active');
+        }
+    }
+
+    function togglePresetSelectionDropdown() {
+        presetSelectionDropdownOpen = !presetSelectionDropdownOpen;
+        const dropdown = document.getElementById('preset-selection-dropdown');
+        const arrow = document.getElementById('preset-selection-arrow');
+        
+        if (presetSelectionDropdownOpen) {
+            renderPresetSelectionList();
+            dropdown.classList.add('show');
+            arrow.style.transform = 'rotate(180deg)';
+        } else {
+            dropdown.classList.remove('show');
+            arrow.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function renderPresetSelectionList() {
+        const dropdown = document.getElementById('preset-selection-dropdown');
+        dropdown.innerHTML = '';
+        
+        presets.forEach(preset => {
+            const item = document.createElement('div');
+            item.className = 'preset-item' + (preset.id === selectedPresetId ? ' selected' : '');
+            
+            item.innerHTML = `
+                <div class="preset-item-info">
+                    <div class="preset-item-name">${preset.name}</div>
+                    <div class="preset-item-desc">${preset.description || '설명 없음'}</div>
+                </div>
+            `;
+            
+            item.onclick = () => {
+                selectPresetFromButton(preset.id);
+            };
+            
+            dropdown.appendChild(item);
+        });
+    }
+
+    function selectPresetFromButton(presetId) {
+        selectPreset(presetId);
+        togglePresetSelectionDropdown();
+    }
+
+    function renderPresetList() {
+        const dropdown = document.getElementById('preset-dropdown');
+        dropdown.innerHTML = '';
+        
+        presets.forEach(preset => {
+            const item = document.createElement('div');
+            item.className = 'preset-item' + (preset.id === selectedPresetId ? ' selected' : '');
+            
+            item.innerHTML = `
+                <div class="preset-item-info">
+                    <div class="preset-item-name">${preset.name}</div>
+                    <div class="preset-item-desc">${preset.description || '설명 없음'}</div>
+                </div>
+                ${preset.id !== 1 ? '<div class="preset-item-delete" onclick="event.stopPropagation(); deletePreset(' + preset.id + ')">삭제</div>' : ''}
+            `;
+            
+            item.onclick = (e) => {
+                if (!e.target.classList.contains('preset-item-delete')) {
+                    selectPreset(preset.id);
+                }
+            };
+            
+            dropdown.appendChild(item);
+        });
+        
+        updatePresetCount();
+    }
+
+    function selectPreset(presetId) {
+        const preset = presets.find(p => p.id === presetId);
+        if (!preset) return;
+        
+        selectedPresetId = presetId;
+        currentSettings = { ...preset.settings };
+        
+        // 상단 프리셋 선택기가 있으면 업데이트
+        const selectedPresetName = document.getElementById('selected-preset-name');
+        if (selectedPresetName) {
+            selectedPresetName.textContent = preset.name;
+        }
+        
+        // UI 업데이트
+        document.getElementById('angle-horizontal').value = currentSettings.angleHorizontal;
+        document.getElementById('angle-vertical').value = currentSettings.angleVertical;
+        document.getElementById('distance').value = currentSettings.distance;
+        updateAngle('horizontal', currentSettings.angleHorizontal);
+        updateAngle('vertical', currentSettings.angleVertical);
+        updateDistance(currentSettings.distance);
+        
+        // 추적 속도 업데이트
+        document.querySelectorAll('.segment-option').forEach(opt => {
+            opt.classList.remove('active');
+            if (opt.textContent.includes(getSpeedLabel(currentSettings.trackingSpeed))) {
+                opt.classList.add('active');
+            }
+        });
+        
+        // 수정 모드로 전환 (기본 설정이 아닌 경우에만)
+        setPresetButtonMode(presetId !== 1);
+        
+        // 상단 드롭다운이 열려있으면 닫기
+        if (presetDropdownOpen) {
+            togglePresetDropdown();
+        }
+    }
+
+    function getSpeedLabel(speed) {
+        const labels = { slow: '느림', normal: '보통', fast: '빠름' };
+        return labels[speed] || '보통';
+    }
+
+    function openSavePresetModal() {
+        document.getElementById('preset-modal').classList.add('show');
+        document.getElementById('preset-name-input').value = '';
+        document.getElementById('preset-desc-input').value = '';
+    }
+
+    function closePresetModal() {
+        document.getElementById('preset-modal').classList.remove('show');
+    }
+
+    function savePreset() {
+        const name = document.getElementById('preset-name-input').value.trim();
+        const description = document.getElementById('preset-desc-input').value.trim();
+        
+        if (!name) {
+            alert('프리셋 이름을 입력해주세요.');
+            return;
+        }
+        
+        const newPreset = {
+            id: Date.now(),
+            name: name,
+            description: description,
+            settings: { ...currentSettings }
+        };
+        
+        presets.push(newPreset);
+        selectedPresetId = newPreset.id;
+        
+        // 상단 프리셋 선택기가 있으면 업데이트
+        const selectedPresetName = document.getElementById('selected-preset-name');
+        if (selectedPresetName) {
+            selectedPresetName.textContent = name;
+        }
+        
+        // 수정 모드로 전환
+        setPresetButtonMode(true);
+        
+        closePresetModal();
+        updatePresetCount();
+        alert('프리셋이 저장되었습니다!');
+    }
+
+    function deletePreset(presetId) {
+        if (presetId === 1) {
+            alert('기본 설정은 삭제할 수 없습니다.');
+            return;
+        }
+        
+        if (!confirm('이 프리셋을 삭제하시겠습니까?')) return;
+        
+        presets = presets.filter(p => p.id !== presetId);
+        
+        if (selectedPresetId === presetId) {
+            selectPreset(1);
+        }
+        
+        renderPresetList();
+    }
+
+    function updatePresetCount() {
+        document.getElementById('preset-count').textContent = `${presets.length}개의 프리셋`;
+    }
+
+    // 페이지 외부 클릭 시 드롭다운 닫기
+    document.addEventListener('click', (e) => {
+        const selector = document.getElementById('preset-selector');
+        const dropdown = document.getElementById('preset-dropdown');
+        const selectionDropdown = document.getElementById('preset-selection-dropdown');
+        
+        if (selector && dropdown && presetDropdownOpen && !selector.contains(e.target) && !dropdown.contains(e.target)) {
+            togglePresetDropdown();
+        }
+        
+        if (selectionDropdown && presetSelectionDropdownOpen && !e.target.closest('.action-btn') && !selectionDropdown.contains(e.target)) {
+            togglePresetSelectionDropdown();
+        }
+    });
+
+    // 초기화
+    updateControlUI();
+    updatePresetCount();
+</script>
+</body>
+</html>

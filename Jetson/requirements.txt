@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+requests
+numpy
+opencv-python
+insightface
+onnx
+onnxruntime-gpu

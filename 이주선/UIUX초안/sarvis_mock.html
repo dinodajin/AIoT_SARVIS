@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARVIS - Smart Assistance Robot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --primary-dark: #357ABD;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 420px;
+            width: 100%;
+            background: var(--bg);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 840px;
+            position: relative;
+        }
+
+        /* ========== LOGIN SCREEN ========== */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-screen {
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .logo-section {
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .face-scan-container {
+            margin-bottom: 40px;
+        }
+
+        .face-scan {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .face-scan.scanning {
+            animation: pulse 2s infinite;
+        }
+
+        .face-scan.success {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .face-scan.error {
+            border-color: var(--error);
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .face-icon {
+            font-size: 80px;
+            filter: grayscale(0.3);
+        }
+
+        .status-message {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            min-height: 24px;
+            color: var(--primary);
+        }
+
+        .status-message.success {
+            color: var(--success);
+        }
+
+        .status-message.error {
+            color: var(--error);
+        }
+
+        .status-detail {
+            font-size: 14px;
+            color: var(--text-light);
+            min-height: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin-bottom: 12px;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .divider::before {
+            margin-right: 12px;
+        }
+
+        .divider::after {
+            margin-left: 12px;
+        }
+
+        /* ========== MANUAL LOGIN FORM ========== */
+        .login-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 8px;
+        }
+
+        /* ========== APP HEADER ========== */
+        .app-header {
+            background: white;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-badge {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ========== CONTENT AREA ========== */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            background: var(--bg);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ========== STATUS BOX ========== */
+        .status-box {
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 2px solid;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-box.idle {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #64748b;
+        }
+
+        .status-box.idle .status-dot {
+            background: #94a3b8;
+        }
+
+        .status-box.tracking {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #16a34a;
+        }
+
+        .status-box.tracking .status-dot {
+            background: #22c55e;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .status-box.moving {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #2563eb;
+        }
+
+        .status-box.moving .status-dot {
+            background: #3b82f6;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .status-box.aside {
+            background: #faf5ff;
+            border-color: #c4b5fd;
+            color: #7c3aed;
+        }
+
+        .status-box.aside .status-dot {
+            background: #8b5cf6;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ========== VOICE CONTROL ========== */
+        .voice-card {
+            background: #1e293b;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            border: 2px solid #334155;
+        }
+
+        .voice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .voice-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #475569;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        .voice-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            height: 60px;
+            margin-bottom: 16px;
+        }
+
+        .voice-wave {
+            width: 5px;
+            height: 20px;
+            background: #475569;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+
+        .voice-card.listening .voice-wave {
+            background: var(--primary);
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        .voice-card.active .voice-wave {
+            background: var(--success);
+            animation: wave 0.8s ease-in-out infinite;
+        }
+
+        .voice-wave:nth-child(1) { animation-delay: 0s; }
+        .voice-wave:nth-child(2) { animation-delay: 0.2s; }
+        .voice-wave:nth-child(3) { animation-delay: 0.4s; }
+        .voice-wave:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 45px; }
+        }
+
+        .voice-text {
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .voice-card.listening .voice-text {
+            color: var(--primary);
+        }
+
+        .voice-card.active .voice-text {
+            color: var(--success);
+        }
+
+        .voice-commands {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+        }
+
+        .voice-commands-title {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .voice-commands-list {
+            color: #94a3b8;
+            font-size: 13px;
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        /* ========== ACTION BUTTONS ========== */
+        .action-btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-btn.success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .action-btn.danger {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .action-btn.outline {
+            background: white;
+            border: 2px solid var(--purple);
+            color: var(--purple);
+        }
+
+        .action-btn.outline:hover:not(:disabled) {
+            background: var(--purple);
+            color: white;
+        }
+
+        /* ========== MANUAL CONTROL ========== */
+        .manual-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .manual-btn {
+            aspect-ratio: 1;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .manual-btn:active:not(.disabled) {
+            transform: scale(0.95);
+            background: var(--bg);
+        }
+
+        .manual-btn.disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        /* ========== SLIDERS ========== */
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .slider-value {
+            color: var(--primary);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* ========== PRESETS ========== */
+        .preset-item {
+            padding: 16px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preset-item:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .preset-item.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .preset-info {
+            flex: 1;
+        }
+
+        .preset-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .preset-desc {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .preset-delete {
+            padding: 6px 12px;
+            background: #fee2e2;
+            color: var(--error);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .preset-delete:hover {
+            background: #fecaca;
+        }
+
+        /* ========== SETTINGS ========== */
+        .profile-card {
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 3px solid rgba(255,255,255,0.4);
+        }
+
+        .profile-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .profile-info p {
+            margin: 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .section-header {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 24px 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .setting-item {
+            background: white;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+        }
+
+        .setting-item:active {
+            transform: scale(0.98);
+            background: var(--bg);
+        }
+
+        .setting-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .setting-icon {
+            font-size: 24px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            border-radius: 12px;
+        }
+
+        .setting-text h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .setting-text p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .setting-action {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .danger-zone {
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 2px solid var(--border);
+        }
+
+        .btn-danger {
+            background: white;
+            border: 2px solid #fee2e2;
+            color: var(--error);
+            text-align: center;
+        }
+
+        .btn-danger:hover {
+            background: #fef2f2;
+        }
+
+        /* ========== BOTTOM NAVIGATION ========== */
+        .bottom-nav {
+            display: flex;
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 8px 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 0 0 3px 3px;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            width: 90%;
+            max-width: 360px;
+            animation: modalSlideUp 0.3s ease;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            margin-bottom: 12px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn.cancel {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .modal-btn.confirm {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ========== UTILITIES ========== */
+        .hidden {
+            display: none !important;
+        }
+
+        .mb-3 {
+            margin-bottom: 24px;
+        }
+
+        /* ========== SCROLLBAR ========== */
+        .app-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .app-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .app-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .app-content::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+        /* ========== COLLAPSIBLE ========== */
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapse-arrow {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .collapse-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .collapsible-content.open {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ========== LOGIN SCREENS ========== -->
+        
+        <!-- Initial Login Screen -->
+        <div class="screen active login-screen" id="loginInitial">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">Voice Sync & Remote Control</div>
+            </div>
+            
+            <div style="width: 100%;">
+                <button class="btn btn-primary" onclick="startFaceLogin()">
+                    👤 얼굴 인식 로그인
+                </button>
+                
+                <div class="divider">또는</div>
+                
+                <button class="btn btn-outline" onclick="showScreen('loginManual')">
+                    🔑 수동 로그인
+                </button>
+                
+                <button class="btn btn-success" onclick="showScreen('signupFace')">
+                    ✨ 회원가입
+                </button>
+            </div>
+        </div>
+
+        <!-- Face Recognition (Login) -->
+        <div class="screen login-screen" id="faceLoginScreen">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">얼굴 인식 중</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan scanning" id="faceLoginScan">
+                    <div class="face-icon">👤</div>
+                </div>
+                <div class="status-message" id="faceLoginStatus">얼굴을 인식하고 있습니다...</div>
+                <div class="status-detail" id="faceLoginDetail"></div>
+            </div>
+        </div>
+
+        <!-- Manual Login -->
+        <div class="screen login-screen" id="loginManual">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">로그인</div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>아이디</label>
+                    <input type="text" class="form-control" id="loginUsername" placeholder="아이디를 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label>비밀번호</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="비밀번호를 입력하세요">
+                </div>
+                
+                <button class="btn btn-primary" onclick="manualLogin()">로그인</button>
+                <button class="btn btn-outline" onclick="showScreen('loginInitial')">뒤로 가기</button>
+                
+                <div class="text-center mt-2">
+                    <a href="#" class="link" onclick="alert('비밀번호 찾기 기능'); return false;">비밀번호를 잊으셨나요?</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup - Face -->
+        <div class="screen login-screen" id="signupFace">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">얼굴 등록</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan scanning" id="signupFaceScan">
+                    <div class="face-icon">👤</div>
+                </div>
+                <div class="status-message" id="signupFaceStatus">얼굴을 등록하고 있습니다...</div>
+                <div class="status-detail" id="signupFaceDetail"></div>
+            </div>
+        </div>
+
+        <!-- Signup - Voice -->
+        <div class="screen login-screen" id="signupVoice">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">음성 등록</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan" id="signupVoiceScan" style="border-color: var(--success);">
+                    <div class="face-icon">🎤</div>
+                </div>
+                <div class="status-message" id="signupVoiceStatus">음성을 등록해주세요</div>
+                <div class="status-detail" id="signupVoiceDetail"></div>
+            </div>
+            
+            <div style="width: 100%;">
+                <button class="btn btn-success" id="startVoiceBtn" onclick="startVoiceRegistration()">
+                    음성 등록 시작
+                </button>
+                <button class="btn btn-outline" onclick="skipVoice()">
+                    건너뛰기
+                </button>
+            </div>
+        </div>
+
+        <!-- Signup - User Info -->
+        <div class="screen login-screen" id="signupInfo">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">회원 정보 입력</div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>이름</label>
+                    <input type="text" class="form-control" id="signupName" placeholder="이름">
+                </div>
+                <div class="form-group">
+                    <label>아이디</label>
+                    <input type="text" class="form-control" id="signupUsername" placeholder="아이디">
+                </div>
+                <div class="form-group">
+                    <label>비밀번호</label>
+                    <input type="password" class="form-control" id="signupPassword" placeholder="비밀번호">
+                </div>
+                <div class="form-group">
+                    <label>이메일</label>
+                    <input type="email" class="form-control" id="signupEmail" placeholder="email@example.com">
+                </div>
+                
+                <button class="btn btn-success" onclick="completeSignup()">가입 완료</button>
+                <button class="btn btn-outline" onclick="showScreen('loginInitial')">처음으로</button>
+            </div>
+        </div>
+
+        <!-- ========== MAIN APP ========== -->
+        <div class="screen" id="appScreen">
+            <!-- Header -->
+            <div class="app-header">
+                <div class="app-title">SARVIS</div>
+                <div class="user-badge" id="userBadge">게스트</div>
+            </div>
+
+            <!-- Content -->
+            <div class="app-content">
+                <!-- Home Tab -->
+                <div class="tab-content active" id="homeTab">
+                    <!-- Status -->
+                    <div class="status-box idle" id="robotStatus">
+                        <div class="status-dot"></div>
+                        <span id="robotStatusText">현재 상태: 대기 중</span>
+                    </div>
+
+                    <!-- Voice Control -->
+                    <div class="voice-card listening" id="voiceCard">
+                        <div class="voice-header">
+                            <div class="voice-label">
+                                <span>🎤</span>
+                                <span>음성 명령</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="voiceToggle" checked onchange="toggleVoice()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="voice-indicator">
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                        </div>
+                        <div class="voice-text" id="voiceText">"싸비스"를 불러주세요</div>
+                        
+                        <div class="voice-commands">
+                            <div class="voice-commands-title">💬 명령어 예시</div>
+                            <div class="voice-commands-list">
+                                이리와 • 따라와 • 비켜봐 • 정지
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Actions -->
+                    <button class="action-btn success" id="btnStartTracking" onclick="startTracking()">
+                        👁️ 얼굴 추적 시작
+                    </button>
+                    <button class="action-btn danger hidden" id="btnStopTracking" onclick="stopTracking()">
+                        ⏹️ 얼굴 추적 중지
+                    </button>
+                    
+                    <button class="action-btn primary" onclick="moveToUser()">
+                        🧭 사용자 위치로 이동
+                    </button>
+                    
+                    <button class="action-btn outline" onclick="moveAside()">
+                        👁️ 시야 비켜주기
+                    </button>
+
+                    <!-- Quick Presets -->
+                    <div class="card">
+                        <div class="card-title">📍 빠른 프리셋</div>
+                        <div id="presetList"></div>
+                    </div>
+                </div>
+
+                <!-- Control Tab -->
+                <div class="tab-content" id="controlTab">
+                    <div class="card">
+                        <div class="card-title">🎮 수동 제어</div>
+                        
+                        <div class="manual-grid">
+                            <div></div>
+                            <div class="manual-btn" onclick="moveManual('up')">▲</div>
+                            <div></div>
+                            
+                            <div class="manual-btn" onclick="moveManual('left')">◀</div>
+                            <div class="manual-btn disabled">●</div>
+                            <div class="manual-btn" onclick="moveManual('right')">▶</div>
+                            
+                            <div></div>
+                            <div class="manual-btn" onclick="moveManual('down')">▼</div>
+                            <div></div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>좌우 각도</span>
+                                <span class="slider-value" id="angleHValue">0°</span>
+                            </div>
+                            <input type="range" min="-90" max="90" value="0" id="angleH" oninput="updateAngle('h', this.value)">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>위아래 각도</span>
+                                <span class="slider-value" id="angleVValue">0°</span>
+                            </div>
+                            <input type="range" min="-45" max="45" value="0" id="angleV" oninput="updateAngle('v', this.value)">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>거리</span>
+                                <span class="slider-value" id="distanceValue">50cm</span>
+                            </div>
+                            <input type="range" min="0" max="200" value="50" step="5" id="distance" oninput="updateDistance(this.value)">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="savePresetModal()">
+                            💾 현재 설정을 프리셋으로 저장
+                        </button>
+                    </div>
+
+                    <!-- Test Button -->
+                    <button class="action-btn outline" onclick="simulateVoice()">
+                        🧪 음성 명령 테스트
+                    </button>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-content" id="settingsTab">
+                    <!-- Profile -->
+                    <div class="profile-card" onclick="showProfileDetails()">
+                        <div class="profile-avatar">👤</div>
+                        <div class="profile-info">
+                            <h3 id="profileName">게스트</h3>
+                            <p id="profileType">게스트 사용자</p>
+                        </div>
+                    </div>
+
+                    <!-- Authentication -->
+                    <div class="section-header">🔐 인증 정보 관리</div>
+                    
+                    <div class="setting-item" onclick="alert('음성 재등록 기능')">
+                        <div class="setting-left">
+                            <div class="setting-icon">🎤</div>
+                            <div class="setting-text">
+                                <h4>음성 재등록</h4>
+                                <p id="voiceRegDate">미등록</p>
+                            </div>
+                        </div>
+                        <div class="setting-action">재등록</div>
+                    </div>
+
+                    <div class="setting-item" onclick="alert('얼굴 재등록 기능')">
+                        <div class="setting-left">
+                            <div class="setting-icon">👤</div>
+                            <div class="setting-text">
+                                <h4>얼굴 재등록</h4>
+                                <p id="faceRegDate">미등록</p>
+                            </div>
+                        </div>
+                        <div class="setting-action">재등록</div>
+                    </div>
+
+                    <!-- Robot Settings -->
+                    <div class="section-header">🤖 로봇 동작 설정</div>
+                    
+                    <div class="setting-item" onclick="alert('가동 범위 재설정 기능')">
+                        <div class="setting-left">
+                            <div class="setting-icon">📐</div>
+                            <div class="setting-text">
+                                <h4>가동 범위 재설정</h4>
+                                <p>안전한 이동을 위한 공간 설정</p>
+                            </div>
+                        </div>
+                        <div class="setting-action">→</div>
+                    </div>
+
+                    <!-- Presets -->
+                    <div class="section-header">📋 프리셋 관리</div>
+                    
+                    <div class="setting-item" onclick="switchTab('control')">
+                        <div class="setting-left">
+                            <div class="setting-icon">⚙️</div>
+                            <div class="setting-text">
+                                <h4>저장된 프리셋</h4>
+                                <p id="presetCount">0개의 프리셋</p>
+                            </div>
+                        </div>
+                        <div class="setting-action">→</div>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="danger-zone">
+                        <button class="btn btn-danger" onclick="logout()">
+                            🚪 로그아웃
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="switchTab('home')">
+                    <div class="nav-icon">🏠</div>
+                    <div class="nav-label">홈</div>
+                </div>
+                <div class="nav-item" onclick="switchTab('control')">
+                    <div class="nav-icon">🎮</div>
+                    <div class="nav-label">제어</div>
+                </div>
+                <div class="nav-item" onclick="switchTab('settings')">
+                    <div class="nav-icon">⚙️</div>
+                    <div class="nav-label">설정</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preset Save Modal -->
+    <div class="modal" id="presetModal">
+        <div class="modal-content">
+            <div class="modal-header">프리셋 저장</div>
+            <input type="text" class="modal-input" id="presetName" placeholder="프리셋 이름 (예: 거실, 주방)">
+            <input type="text" class="modal-input" id="presetDesc" placeholder="설명 (선택사항)">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closePresetModal()">취소</button>
+                <button class="modal-btn confirm" onclick="savePreset()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Details Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">내 프로필</div>
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 60px; margin-bottom: 16px;">👤</div>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;" id="modalProfileName">게스트</div>
+                <div style="font-size: 14px; color: var(--text-light);" id="modalProfileEmail">-</div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm" onclick="closeProfileModal()" style="width: 100%;">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentUser = {
+            name: '게스트',
+            type: 'guest', // 'guest' or 'registered'
+            email: null
+        };
+
+        let robotState = 'idle'; // 'idle', 'tracking', 'moving', 'aside'
+        let isTracking = false;
+        let voiceEnabled = true;
+
+        let currentSettings = {
+            angleH: 0,
+            angleV: 0,
+            distance: 50
+        };
+
+        let presets = [
+            { id: 1, name: '거실', desc: 'TV 앞', settings: { angleH: 0, angleV: 0, distance: 50 } },
+            { id: 2, name: '주방', desc: '식탁 옆', settings: { angleH: 45, angleV: -10, distance: 80 } },
+            { id: 3, name: '침실', desc: '침대 옆', settings: { angleH: -30, angleV: 15, distance: 60 } }
+        ];
+
+        // Screen Management
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Face Login
+        function startFaceLogin() {
+            showScreen('faceLoginScreen');
+            
+            const scan = document.getElementById('faceLoginScan');
+            const status = document.getElementById('faceLoginStatus');
+            const detail = document.getElementById('faceLoginDetail');
+            
+            setTimeout(() => {
+                const success = Math.random() > 0.3;
+                
+                if (success) {
+                    scan.classList.remove('scanning');
+                    scan.classList.add('success');
+                    status.textContent = '인식 성공!';
+                    status.classList.add('success');
+                    detail.textContent = '환영합니다!';
+                    
+                    setTimeout(() => {
+                        loginSuccess('홍길동', 'registered', 'hong@example.com');
+                    }, 1000);
+                } else {
+                    scan.classList.remove('scanning');
+                    scan.classList.add('error');
+                    status.textContent = '인식 실패';
+                    status.classList.add('error');
+                    detail.textContent = '얼굴을 인식할 수 없습니다. 수동 로그인을 이용해주세요.';
+                    
+                    setTimeout(() => {
+                        showScreen('loginManual');
+                    }, 2000);
+                }
+            }, 2000);
+        }
+
+        // Manual Login
+        function manualLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('아이디와 비밀번호를 입력해주세요.');
+                return;
+            }
+            
+            loginSuccess(username, 'registered', username + '@example.com');
+        }
+
+        // Signup - Face
+        function showSignupFace() {
+            showScreen('signupFace');
+            
+            const scan = document.getElementById('signupFaceScan');
+            const status = document.getElementById('signupFaceStatus');
+            
+            setTimeout(() => {
+                scan.classList.remove('scanning');
+                scan.classList.add('success');
+                status.textContent = '얼굴 등록 완료!';
+                status.classList.add('success');
+                
+                setTimeout(() => {
+                    showScreen('signupVoice');
+                }, 1000);
+            }, 2000);
+        }
+
+        // Signup - Voice
+        function startVoiceRegistration() {
+            const scan = document.getElementById('signupVoiceScan');
+            const status = document.getElementById('signupVoiceStatus');
+            const btn = document.getElementById('startVoiceBtn');
+            
+            btn.disabled = true;
+            scan.classList.add('scanning');
+            status.textContent = '음성을 분석하고 있습니다...';
+            
+            setTimeout(() => {
+                scan.classList.remove('scanning');
+                scan.classList.add('success');
+                status.textContent = '음성 등록 완료!';
+                status.classList.add('success');
+                
+                setTimeout(() => {
+                    showScreen('signupInfo');
+                }, 1000);
+            }, 2000);
+        }
+
+        function skipVoice() {
+            showScreen('signupInfo');
+        }
+
+        // Complete Signup
+        function completeSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const username = document.getElementById('signupUsername').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            
+            if (!name || !username || !email) {
+                alert('모든 필수 정보를 입력해주세요.');
+                return;
+            }
+            
+            loginSuccess(name, 'registered', email);
+        }
+
+        // Login Success
+        function loginSuccess(name, type, email) {
+            currentUser = { name, type, email };
+            updateUserInfo();
+            showScreen('appScreen');
+        }
+
+        // Update UI with user info
+        function updateUserInfo() {
+            document.getElementById('userBadge').textContent = currentUser.name;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('modalProfileName').textContent = currentUser.name;
+            
+            if (currentUser.type === 'registered') {
+                const today = new Date().toLocaleDateString('ko-KR');
+                document.getElementById('profileType').textContent = `등록일: ${today}`;
+                document.getElementById('voiceRegDate').textContent = `등록: ${today}`;
+                document.getElementById('faceRegDate').textContent = `등록: ${today}`;
+                document.getElementById('modalProfileEmail').textContent = currentUser.email || '-';
+            } else {
+                document.getElementById('profileType').textContent = '게스트 사용자';
+                document.getElementById('voiceRegDate').textContent = '미등록';
+                document.getElementById('faceRegDate').textContent = '미등록';
+                document.getElementById('modalProfileEmail').textContent = '-';
+            }
+            
+            renderPresets();
+            updatePresetCount();
+        }
+
+        // Tab Management
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            document.querySelectorAll('.nav-item')[
+                tabName === 'home' ? 0 : tabName === 'control' ? 1 : 2
+            ].classList.add('active');
+        }
+
+        // Robot Control
+        function startTracking() {
+            isTracking = true;
+            robotState = 'tracking';
+            updateRobotUI();
+        }
+
+        function stopTracking() {
+            isTracking = false;
+            robotState = 'idle';
+            updateRobotUI();
+        }
+
+        function moveToUser() {
+            robotState = 'moving';
+            updateRobotUI();
+            
+            setTimeout(() => {
+                robotState = isTracking ? 'tracking' : 'idle';
+                updateRobotUI();
+            }, 2000);
+        }
+
+        function moveAside() {
+            robotState = 'aside';
+            updateRobotUI();
+        }
+
+        function updateRobotUI() {
+            const statusBox = document.getElementById('robotStatus');
+            const statusText = document.getElementById('robotStatusText');
+            const btnStart = document.getElementById('btnStartTracking');
+            const btnStop = document.getElementById('btnStopTracking');
+            
+            // Update buttons
+            if (isTracking) {
+                btnStart.classList.add('hidden');
+                btnStop.classList.remove('hidden');
+            } else {
+                btnStart.classList.remove('hidden');
+                btnStop.classList.add('hidden');
+            }
+            
+            // Update status
+            statusBox.className = 'status-box ' + robotState;
+            
+            const statusMessages = {
+                'idle': '현재 상태: 대기 중',
+                'tracking': '현재 상태: 얼굴 추적 중',
+                'moving': '현재 상태: 사용자 위치로 이동 중',
+                'aside': '현재 상태: 시야에서 비켜난 상태'
+            };
+            
+            statusText.textContent = statusMessages[robotState];
+        }
+
+        // Voice Control
+        function toggleVoice() {
+            voiceEnabled = document.getElementById('voiceToggle').checked;
+            const card = document.getElementById('voiceCard');
+            const text = document.getElementById('voiceText');
+            
+            if (voiceEnabled) {
+                card.classList.add('listening');
+                text.textContent = '"싸비스"를 불러주세요';
+            } else {
+                card.classList.remove('listening', 'active');
+                text.textContent = '음성 명령 비활성화됨';
+            }
+        }
+
+        function simulateVoice() {
+            if (!voiceEnabled) {
+                alert('음성 명령이 비활성화되어 있습니다.');
+                return;
+            }
+            
+            const card = document.getElementById('voiceCard');
+            const text = document.getElementById('voiceText');
+            
+            card.classList.remove('listening');
+            card.classList.add('active');
+            text.textContent = '✓ 네, 말씀하세요!';
+            
+            setTimeout(() => {
+                const commands = [
+                    { text: '나를 따라와', action: startTracking },
+                    { text: '비켜줘', action: moveAside },
+                    { text: '정지', action: stopTracking },
+                    { text: '여기 와', action: moveToUser }
+                ];
+                
+                const cmd = commands[Math.floor(Math.random() * commands.length)];
+                text.textContent = `"${cmd.text}" 명령 인식!`;
+                
+                setTimeout(() => {
+                    cmd.action();
+                    
+                    card.classList.remove('active');
+                    if (voiceEnabled) {
+                        card.classList.add('listening');
+                        text.textContent = '"싸비스"를 불러주세요';
+                    }
+                }, 1000);
+            }, 2000);
+        }
+
+        // Manual Control
+        function moveManual(direction) {
+            console.log('Manual move:', direction);
+            // Implement manual control logic
+        }
+
+        function updateAngle(type, value) {
+            if (type === 'h') {
+                currentSettings.angleH = parseInt(value);
+                document.getElementById('angleHValue').textContent = value + '°';
+            } else {
+                currentSettings.angleV = parseInt(value);
+                document.getElementById('angleVValue').textContent = value + '°';
+            }
+        }
+
+        function updateDistance(value) {
+            currentSettings.distance = parseInt(value);
+            document.getElementById('distanceValue').textContent = value + 'cm';
+        }
+
+        // Preset Management
+        function renderPresets() {
+            const list = document.getElementById('presetList');
+            list.innerHTML = '';
+            
+            presets.forEach(preset => {
+                const item = document.createElement('div');
+                item.className = 'preset-item';
+                item.onclick = () => applyPreset(preset.id);
+                
+                item.innerHTML = `
+                    <div class="preset-info">
+                        <div class="preset-name">${preset.name}</div>
+                        <div class="preset-desc">${preset.desc}</div>
+                    </div>
+                `;
+                
+                list.appendChild(item);
+            });
+        }
+
+        function applyPreset(id) {
+            const preset = presets.find(p => p.id === id);
+            if (!preset) return;
+            
+            currentSettings = { ...preset.settings };
+            
+            document.getElementById('angleH').value = currentSettings.angleH;
+            document.getElementById('angleV').value = currentSettings.angleV;
+            document.getElementById('distance').value = currentSettings.distance;
+            
+            updateAngle('h', currentSettings.angleH);
+            updateAngle('v', currentSettings.angleV);
+            updateDistance(currentSettings.distance);
+            
+            alert(`"${preset.name}" 프리셋이 적용되었습니다.`);
+        }
+
+        function savePresetModal() {
+            document.getElementById('presetModal').classList.add('show');
+            document.getElementById('presetName').value = '';
+            document.getElementById('presetDesc').value = '';
+        }
+
+        function closePresetModal() {
+            document.getElementById('presetModal').classList.remove('show');
+        }
+
+        function savePreset() {
+            const name = document.getElementById('presetName').value.trim();
+            const desc = document.getElementById('presetDesc').value.trim();
+            
+            if (!name) {
+                alert('프리셋 이름을 입력해주세요.');
+                return;
+            }
+            
+            const newPreset = {
+                id: Date.now(),
+                name: name,
+                desc: desc || '사용자 정의',
+                settings: { ...currentSettings }
+            };
+            
+            presets.push(newPreset);
+            renderPresets();
+            updatePresetCount();
+            closePresetModal();
+            
+            alert('프리셋이 저장되었습니다!');
+        }
+
+        function updatePresetCount() {
+            document.getElementById('presetCount').textContent = `${presets.length}개의 프리셋`;
+        }
+
+        // Profile
+        function showProfileDetails() {
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('show');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                currentUser = { name: '게스트', type: 'guest', email: null };
+                robotState = 'idle';
+                isTracking = false;
+                showScreen('loginInitial');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-start face recognition for signup
+            const signupFaceScreen = document.getElementById('signupFace');
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.target.classList.contains('active') && 
+                        mutation.target.id === 'signupFace') {
+                        setTimeout(() => showSignupFace(), 500);
+                    }
+                });
+            });
+            
+            observer.observe(signupFaceScreen, { attributes: true, attributeFilter: ['class'] });
+            
+            renderPresets();
+            updatePresetCount();
+        });
+    </script>
+</body>
+</html>

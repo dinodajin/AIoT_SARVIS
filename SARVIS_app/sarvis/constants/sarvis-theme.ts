@@ -1,0 +1,25 @@
+export const SarvisTheme = {
+  colors: {
+    primary: '#0A57FF',
+    primaryDark: '#0847D6',
+    primaryLight: '#EAF0FF',
+    success: '#10b981',
+    successLight: '#ecfdf5',
+    warning: '#f59e0b',
+    warningLight: '#fffbeb',
+    danger: '#ef4444',
+    dangerLight: '#fef2f2',
+    bg: '#F5F7FF',
+    card: '#ffffff',
+    text: '#1e293b',
+    textLight: '#64748b',
+    textMuted: '#94a3b8',
+    border: '#E6ECFF',
+  },
+  radius: {
+    sm: 8,
+    md: 12,
+    lg: 16,
+    xl: 20,
+  },
+};

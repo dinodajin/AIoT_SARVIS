@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARVIS - Wireframe</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --bg: #f5f7fa;
+            --card: #ffffff;
+            --text: #333;
+            --border: #e0e0e0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.05);
+            --success: #4a90e2;
+            --error: #e74c3c;
+            --purple: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 로그인 화면 */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .face-scan {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+        }
+
+        .face-scan-text {
+            color: #999;
+            font-size: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .status-message {
+            margin: 20px 0;
+            min-height: 24px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .error-message {
+            color: var(--error);
+            margin: 10px 0;
+            min-height: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+            transform: translateY(1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #95a5a6;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .divider::before {
+            margin-right: 10px;
+        }
+
+        .divider::after {
+            margin-left: 10px;
+        }
+
+        /* 수동 로그인 폼 */
+        .login-form {
+            width: 100%;
+            max-width: 100%;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin: 5px 0 20px;
+        }
+
+        .forgot-password a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 환영 화면 */
+        .welcome-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .welcome-submessage {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* 메인 앱 컨테이너 */
+        .app-container {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        /* 상태 표시 */
+        .status-box {
+            margin-bottom: 15px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #9ca3af;
+            flex-shrink: 0;
+        }
+
+        .status-dot.active {
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-box.tracking { 
+            color: #22c55e; 
+            background: #f0fdf4; 
+            border-color: #86efac; 
+        }
+        
+        .status-box.moving { 
+            color: var(--primary); 
+            background: #eff6ff; 
+            border-color: #93c5fd; 
+        }
+        
+        .status-box.aside { 
+            color: var(--purple); 
+            background: #faf5ff; 
+            border-color: #c4b5fd; 
+        }
+        
+        .status-box.idle { 
+            color: #9ca3af; 
+        }
+
+        /* 음성 명령 */
+        .voice-status {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: 0.3s;
+        }
+
+        .voice-status.listening {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .voice-status.active {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .voice-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            height: 40px;
+            margin-bottom: 12px;
+        }
+
+        .voice-wave {
+            width: 4px;
+            height: 16px;
+            background: #cbd5e1;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .voice-status.listening .voice-wave {
+            background: var(--primary);
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        .voice-status.active .voice-wave {
+            background: var(--success);
+            animation: wave 0.8s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 16px; }
+            50% { height: 32px; }
+        }
+
+        .voice-status-text {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* 수동 제어 */
+        .manual-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .manual-btn {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .manual-btn:active {
+            background: #f0f0f0;
+            transform: scale(0.95);
+        }
+
+        /* 슬라이더 */
+        .slider-container {
+            margin: 15px 0;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        /* 프리셋 */
+        .preset-item {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preset-item:active {
+            background: #f5f5f5;
+        }
+
+        .preset-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .preset-desc {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 네비게이션 */
+        .nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            padding: 8px 0;
+            background: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 400px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 5px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .nav-item-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* 스위치 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* 프로필 섹션 (설정) */
+        .profile-section {
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .profile-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+
+        .profile-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin: 20px 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .setting-item {
+            background: white;
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #f1f5f9;
+        }
+
+        .setting-item:active {
+            background: #f8fafc;
+            transform: scale(0.98);
+        }
+
+        .setting-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .setting-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .setting-info h4 {
+            margin: 0 0 3px 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .setting-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .setting-action {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .danger-zone {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .danger-btn {
+            background: white;
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            border: 1px solid #fee2e2;
+            color: var(--error);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .danger-btn:active {
+            background: #fef2f2;
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 1. 첫 화면 - 로그인/회원가입 구분 -->
+        <div class="login-container" id="screen1">
+            <div class="logo">SARVIS</div>
+            <div class="subtitle">Voice Sync & Remote Control</div>
+            
+            <!-- 로그인 섹션 -->
+            <div style="width: 100%; ">
+                <button class="btn" onclick="startFaceLogin()">얼굴 인식으로 로그인</button>
+                
+            </div>
+            
+            <div class="divider">또는</div>
+            
+            <!-- 회원가입 섹션 -->
+            <div style="width: 100%;">
+                <button class="btn btn-outline" onclick="showScreen('screenLogin')">수동으로 로그인</button>
+                <button class="btn btn-success" onclick="showScreen('screen2')"> 회원가입</button>
+            </div>
+        </div>
+
+        <!-- 2. 얼굴 인식 화면 (회원가입) -->
+        <div class="login-container" id="screen2" style="display: none;">
+            <div class="logo">SARVIS</div>
+            <div class="subtitle">얼굴 인식</div>
+            
+            <div class="face-scan" id="faceScan">
+                <div class="face-scan-text">👤</div>
+            </div>
+            
+            <div class="status-message" id="statusMessage">얼굴을 인식 중입니다...</div>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+        <!-- 3. 음성 등록 화면 (회원가입만 해당) -->
+        <div class="login-container" id="screen3" style="display: none;">
+            <div class="logo">SARVIS</div>
+            <div class="subtitle">음성 등록</div>
+            
+            <div class="face-scan" style="border-color: var(--success);">
+                <div class="face-scan-text" style="font-size: 48px;">🎤</div>
+            </div>
+            
+            <div class="status-message" id="voiceStatusMessage">음성을 등록해주세요</div>
+            <div class="error-message" id="voiceErrorMessage"></div>
+            
+            <button class="btn btn-success" id="startVoiceBtn" onclick="startVoiceRegistration()">음성 등록 시작</button>
+            <button class="btn btn-secondary" onclick="skipVoice()">건너뛰기</button>
+        </div>
+
+        <!-- 4. 회원정보 입력 화면 -->
+        <div class="login-container login-form" id="screen4">
+            <div class="logo">SARVIS</div>
+            <div class="subtitle">회원 정보 입력</div>
+            
+            <div class="form-group">
+                <label>이름</label>
+                <input type="text" class="form-control" id="signupName">
+            </div>
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" class="form-control" id="signupUsername">
+            </div>
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" class="form-control" id="signupPassword">
+            </div>
+            <div class="form-group">
+                <label>비밀번호 확인</label>
+                <input type="password" class="form-control" id="signupPasswordConfirm">
+            </div>
+            <div class="form-group">
+                <label>이메일</label>
+                <input type="email" class="form-control" id="signupEmail">
+            </div>
+            <div class="form-group">
+                <label>전화번호</label>
+                <input type="tel" class="form-control" placeholder="010-1234-5678" id="signupPhone">
+            </div>
+            <button class="btn" onclick="completeSignup()">가입 완료</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen1')">처음으로</button>
+        </div>
+
+        <!-- 수동 로그인 화면 -->
+        <div class="login-container login-form" id="screenLogin">
+            <div class="logo">SARVIS</div>
+            <div class="subtitle">로그인</div>
+            
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <input type="text" id="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" class="form-control">
+            </div>
+            <div class="forgot-password">
+                <a href="#" onclick="alert('비밀번호 찾기 기능'); return false;">비밀번호를 잊으셨나요?</a>
+            </div>
+            <button class="btn" onclick="login()">로그인</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen1')">뒤로 가기</button>
+            
+            <div class="signup-link">
+                계정이 없으신가요? <a href="#" onclick="showScreen('screen2'); return false;">회원가입</a>
+            </div>
+        </div>
+
+        <!-- 환영 화면 -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-icon">👋</div>
+            <div class="welcome-message">안녕하세요, <span id="welcomeUserName">사용자</span>님</div>
+            <div class="welcome-submessage">SARVIS에 오신 것을 환영합니다</div>
+        </div>
+
+        <!-- 메인 앱 화면 -->
+        <div class="app-container" id="appContainer">
+            <div class="header">
+                <h1>SARVIS</h1>
+                <p>안녕하세요, <span id="userName">사용자</span>님</p>
+            </div>
+
+            <!-- 메인 컨트롤 탭 -->
+            <div id="main-control" class="content active">
+                <!-- 상태 표시 -->
+                <div class="status-box idle" id="face-follow-status">
+                    <div class="status-dot" id="status-dot"></div>
+                    <span id="status-text">현재 상태: 대기 중</span>
+                </div>
+
+                <!-- 음성 명령 제어 -->
+                <div class="card" style="padding: 18px 22px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 20px;">🎤</span>
+                            <span style="font-weight: 600; font-size: 15px;">음성 명령</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="voice-toggle" checked onchange="toggleVoiceCommand()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="voice-status listening" id="voice-status">
+                        <div class="voice-indicator">
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                        </div>
+                        <div class="voice-status-text" id="voice-status-text">"싸비스"를 불러주세요</div>
+                    </div>
+
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
+                        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; font-weight: 500;">
+                            💬 명령어 예시
+                        </div>
+                        <div style="font-size: 13px; color: #64748b; line-height: 2;">
+                            이리와, 따라와, 비켜봐, 정지
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 얼굴 추적 버튼 -->
+                <button class="btn btn-success" id="btn-start-tracking" onclick="handleStartTracking()">
+                    👁️ 얼굴 추적 시작
+                </button>
+                <button class="btn" style="background: var(--error);" id="btn-stop-tracking" onclick="handleStopTracking()" style="display: none;">
+                    👁️ 얼굴 추적 중지
+                </button>
+
+                <!-- 메인 액션 버튼 -->
+                <button class="btn" id="btn-move-to-user" onclick="handleMoveToUser()">
+                    🧭 사용자 위치로 이동
+                </button>
+                <button class="btn btn-outline" id="btn-move-aside" onclick="handleMoveAside()">
+                    👁️ 시야 비켜주기
+                </button>
+
+                <h3>프리셋</h3>
+                <div class="preset-item" onclick="applyPreset('거실')">
+                    <div>
+                        <div class="preset-name">거실</div>
+                        <div class="preset-desc">TV 앞</div>
+                    </div>
+                </div>
+                <div class="preset-item" onclick="applyPreset('주방')">
+                    <div>
+                        <div class="preset-name">주방</div>
+                        <div class="preset-desc">식탁 옆</div>
+                    </div>
+                </div>
+                <div class="preset-item" onclick="applyPreset('침실')">
+                    <div>
+                        <div class="preset-name">침실</div>
+                        <div class="preset-desc">침대 옆</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 프리셋 관리 탭 -->
+            <div id="presets" class="content">
+                <div class="card">
+                    <h3>프리셋 관리</h3>
+                    <button class="btn">새 프리셋 추가</button>
+                </div>
+                
+                <div class="preset-item">
+                    <div>
+                        <div class="preset-name">거실</div>
+                        <div class="preset-desc">TV 앞 • 수정 | 삭제</div>
+                    </div>
+                </div>
+                <div class="preset-item">
+                    <div>
+                        <div class="preset-name">주방</div>
+                        <div class="preset-desc">식탁 옆 • 수정 | 삭제</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기록 탭 -->
+            <div id="history" class="content">
+                <div class="card">
+                    <h3>사용 기록</h3>
+                    <div class="status-box">오늘의 사용 시간: 2시간 15분</div>
+                </div>
+                
+                <div class="preset-item">
+                    <div>
+                        <div class="preset-name">2024-01-20 14:30</div>
+                        <div class="preset-desc">얼굴 추적 • 거실 위치</div>
+                    </div>
+                </div>
+                <div class="preset-item">
+                    <div>
+                        <div class="preset-name">2024-01-20 10:15</div>
+                        <div class="preset-desc">수동 제어 • 주방 위치</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 설정 탭 -->
+            <div id="settings" class="content">
+                <div class="profile-section">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-info">
+                        <h3 id="settings-user-name">사용자</h3>
+                        <p id="settings-user-type">등록 사용자</p>
+                    </div>
+                </div>
+
+                <div class="section-title">🔐 인증 정보 관리</div>
+                
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon">🎤</div>
+                        <div class="setting-info">
+                            <h4>음성 재등록</h4>
+                            <p>등록: 2024.01.20</p>
+                        </div>
+                    </div>
+                    <div class="setting-action">재등록</div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon">👤</div>
+                        <div class="setting-info">
+                            <h4>얼굴 재등록</h4>
+                            <p>등록: 2024.01.20</p>
+                        </div>
+                    </div>
+                    <div class="setting-action">재등록</div>
+                </div>
+
+                <div class="section-title">🤖 로봇 동작 설정</div>
+                
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon">📐</div>
+                        <div class="setting-info">
+                            <h4>가동 범위 재설정</h4>
+                            <p>안전한 이동을 위한 공간 설정</p>
+                        </div>
+                    </div>
+                    <div class="setting-action">→</div>
+                </div>
+
+                <div class="danger-zone">
+                    <div class="danger-btn" onclick="handleLogout()">
+                        🚪 로그아웃
+                    </div>
+                </div>
+            </div>
+
+            <!-- 프로필 탭 -->
+            <div id="profile" class="content">
+                <div class="card">
+                    <h3>내 프로필</h3>
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 60px; margin-bottom: 15px;">👤</div>
+                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;" id="profileName">사용자</div>
+                        <div style="font-size: 14px; color: #666;">user@example.com</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>통계</h3>
+                    <div class="preset-item">
+                        <div>
+                            <div class="preset-name">총 사용 시간</div>
+                            <div class="preset-desc">48시간 30분</div>
+                        </div>
+                    </div>
+                    <div class="preset-item">
+                        <div>
+                            <div class="preset-name">가입일</div>
+                            <div class="preset-desc">2024년 1월 1일</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 하단 네비게이션 -->
+            <div class="nav">
+                <div class="nav-item active" onclick="switchTab('home', this)">
+                    <div class="nav-item-icon">🏠</div>
+                    <div class="nav-item-label">홈</div>
+                </div>
+                <div class="nav-item" onclick="switchTab('control', this)">
+                    <div class="nav-item-icon">🎮</div>
+                    <div class="nav-item-label">제어</div>
+                </div>
+                <div class="nav-item" onclick="switchTab('history', this)">
+                    <div class="nav-item-icon">📊</div>
+                    <div class="nav-item-label">기록</div>
+                </div>
+                <div class="nav-item" onclick="switchTab('profile', this)">
+                    <div class="nav-item-icon">👤</div>
+                    <div class="nav-item-label">프로필</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let recognitionAttempts = 0;
+        const MAX_ATTEMPTS = 3;
+        let faceRecognized = false;
+        let voiceRegistered = false;
+        let isSignupMode = false; // 회원가입 모드인지 로그인 모드인지 구분
+
+        // 로봇 상태
+        let robotState = 'idle';
+        let faceTrackingMode = false;
+        let voiceCommandEnabled = true;
+        let advancedExpanded = false;
+
+        // 화면 전환
+        function showScreen(screenId) {
+            document.querySelectorAll('.login-container, .welcome-screen, .app-container').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                if (screenId === 'appContainer') {
+                    screen.style.display = 'flex';
+                } else {
+                    screen.style.display = 'flex';
+                }
+            }
+
+            // 얼굴 인식 화면으로 이동 시 자동 시작
+            if (screenId === 'screen2') {
+                isSignupMode = true; // 회원가입 모드로 설정
+                setTimeout(startFaceRecognition, 500);
+            }
+        }
+
+        // 얼굴 인식 로그인 시작
+        function startFaceLogin() {
+            isSignupMode = false; // 로그인 모드로 설정
+            showScreen('screen2');
+            setTimeout(startFaceRecognition, 500);
+        }
+
+        // 얼굴 인식 시작
+        function startFaceRecognition() {
+            recognitionAttempts = 0;
+            document.getElementById('statusMessage').textContent = '얼굴을 인식 중입니다...';
+            document.getElementById('statusMessage').style.color = 'var(--primary)';
+            document.getElementById('errorMessage').textContent = '';
+            document.getElementById('faceScan').style.borderColor = 'var(--primary)';
+            
+            setTimeout(attemptRecognition, 2000);
+        }
+
+        // 인식 시도
+        function attemptRecognition() {
+            recognitionAttempts++;
+            const isSuccess = Math.random() < 0.7;
+            
+            if (isSuccess) {
+                document.getElementById('statusMessage').textContent = '인식 성공!';
+                document.getElementById('statusMessage').style.color = 'var(--success)';
+                document.getElementById('faceScan').style.borderColor = 'var(--success)';
+                faceRecognized = true;
+                
+                setTimeout(() => {
+                    if (isSuccess) {
+                        document.getElementById('statusMessage').textContent = '인식 성공!';
+                        document.getElementById('statusMessage').style.color = 'var(--success)';
+                        document.getElementById('faceScan').style.borderColor = 'var(--success)';
+
+                        setTimeout(() => {
+                            showWelcomeScreen('홍길동'); // 바로 환영
+                        }, 800);
+                    }
+                }, 1000);
+            } else {
+                if (recognitionAttempts >= MAX_ATTEMPTS) {
+                    document.getElementById('statusMessage').textContent = '얼굴 인식 실패';
+                    document.getElementById('statusMessage').style.color = 'var(--error)';
+                    document.getElementById('errorMessage').textContent = '얼굴을 인식할 수 없습니다.';
+                    document.getElementById('faceScan').style.borderColor = 'var(--error)';
+                    
+                    setTimeout(() => {
+                        showScreen('screenLogin');
+                    }, 2000);
+                } else {
+                    document.getElementById('statusMessage').textContent = `인식 실패 (${recognitionAttempts}/${MAX_ATTEMPTS})`;
+                    document.getElementById('statusMessage').style.color = '#f39c12';
+                    document.getElementById('errorMessage').textContent = '다시 시도 중...';
+                    document.getElementById('faceScan').style.borderColor = 'var(--success)';
+
+                    
+                    setTimeout(() => {
+                        document.getElementById('statusMessage').textContent = '얼굴을 인식 중입니다...';
+                        document.getElementById('errorMessage').textContent = '';
+                        setTimeout(attemptRecognition, 2000);
+                    }, 1500);
+                }
+            }
+        }
+
+        // 음성 등록 시작
+        function startVoiceRegistration() {
+            document.getElementById('voiceStatusMessage').textContent = '음성을 분석 중입니다...';
+            document.getElementById('voiceStatusMessage').style.color = 'var(--primary)';
+            document.getElementById('startVoiceBtn').disabled = true;
+            
+            setTimeout(() => {
+                document.getElementById('voiceStatusMessage').textContent = '음성 등록 완료!';
+                document.getElementById('voiceStatusMessage').style.color = 'var(--success)';
+                voiceRegistered = true;
+                
+                setTimeout(() => {
+                    showScreen('screen4');
+                }, 1000);
+            }, 2000);
+        }
+
+        // 음성 건너뛰기
+        function skipVoice() {
+            voiceRegistered = false;
+            showScreen('screen4');
+        }
+
+        // 회원가입 완료
+        function completeSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            
+            if (!name) {
+                alert('이름을 입력해주세요.');
+                return;
+            }
+            
+            showWelcomeScreen(name);
+        }
+
+        // 로그인
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                alert('아이디와 비밀번호를 입력해주세요.');
+                return;
+            }
+            
+            showWelcomeScreen(username);
+        }
+
+        // 환영 화면
+        function showWelcomeScreen(username) {
+            document.getElementById('welcomeUserName').textContent = username;
+            showScreen('welcomeScreen');
+            
+            setTimeout(() => {
+                goToApp(username);
+            }, 2000);
+        }
+
+        // 앱으로 이동
+        function goToApp(username) {
+            document.getElementById('userName').textContent = username;
+            document.getElementById('settings-user-name').textContent = username;
+            document.getElementById('profileName').textContent = username;
+            showScreen('appContainer');
+        }
+
+        // 로그아웃
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                location.reload();
+            }
+        }
+
+        // 탭 전환
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // ===== 로봇 제어 기능 =====
+
+        function handleStartTracking() {
+            faceTrackingMode = true;
+            robotState = 'tracking';
+            updateControlUI();
+        }
+
+        function handleStopTracking() {
+            faceTrackingMode = false;
+            robotState = 'idle';
+            updateControlUI();
+        }
+
+        function handleMoveToUser() {
+            robotState = 'moving-to-user';
+            updateControlUI();
+            
+            setTimeout(() => {
+                robotState = faceTrackingMode ? 'tracking' : 'idle';
+                updateControlUI();
+            }, 2000);
+        }
+
+        function handleMoveAside() {
+            robotState = 'moved-aside';
+            updateControlUI();
+        }
+
+        function updateControlUI() {
+            const statusBox = document.getElementById('face-follow-status');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const btnStartTracking = document.getElementById('btn-start-tracking');
+            const btnStopTracking = document.getElementById('btn-stop-tracking');
+            
+            if (faceTrackingMode) {
+                btnStartTracking.style.display = 'none';
+                btnStopTracking.style.display = 'block';
+            } else {
+                btnStartTracking.style.display = 'block';
+                btnStopTracking.style.display = 'none';
+            }
+            
+            let stateText = '';
+            let stateClass = '';
+            
+            switch(robotState) {
+                case 'tracking':
+                    stateText = '얼굴 추적 중';
+                    stateClass = 'tracking';
+                    statusDot.classList.add('active');
+                    break;
+                case 'moving-to-user':
+                    stateText = '사용자 위치로 이동 중';
+                    stateClass = 'moving';
+                    statusDot.classList.add('active');
+                    break;
+                case 'moved-aside':
+                    stateText = '시야에서 비켜난 상태';
+                    stateClass = 'aside';
+                    statusDot.classList.add('active');
+                    break;
+                default:
+                    stateText = '대기 중';
+                    stateClass = 'idle';
+                    statusDot.classList.remove('active');
+                    break;
+            }
+            
+            statusText.textContent = '현재 상태: ' + stateText;
+            statusBox.className = 'status-box ' + stateClass;
+        }
+
+        // 음성 명령
+        function toggleVoiceCommand() {
+            voiceCommandEnabled = document.getElementById('voice-toggle').checked;
+            const voiceStatus = document.getElementById('voice-status');
+            const voiceStatusText = document.getElementById('voice-status-text');
+            
+            if (voiceCommandEnabled) {
+                voiceStatus.classList.add('listening');
+                voiceStatusText.textContent = '"싸비스"를 불러주세요';
+            } else {
+                voiceStatus.classList.remove('listening', 'active');
+                voiceStatusText.textContent = '음성 명령 비활성화됨';
+            }
+        }
+
+        function testVoice() {
+            if (!voiceCommandEnabled) {
+                alert('음성 명령이 비활성화되어 있습니다.');
+                return;
+            }
+            
+            const voiceStatus = document.getElementById('voice-status');
+            const voiceStatusText = document.getElementById('voice-status-text');
+            
+            voiceStatus.classList.remove('listening');
+            voiceStatus.classList.add('active');
+            voiceStatusText.textContent = '✓ 네, 말씀하세요!';
+            
+            setTimeout(() => {
+                const commands = ['나를 따라와', '비켜줘', '정지', '여기 와'];
+                const cmd = commands[Math.floor(Math.random() * commands.length)];
+                voiceStatusText.textContent = `"${cmd}" 명령 인식!`;
+                
+                setTimeout(() => {
+                    voiceStatus.classList.remove('active');
+                    voiceStatus.classList.add('listening');
+                    voiceStatusText.textContent = '"싸비스"를 불러주세요';
+                }, 1500);
+            }, 2000);
+        }
+
+        // 고급 제어
+        function toggleAdvanced() {
+            advancedExpanded = !advancedExpanded;
+            const panel = document.getElementById('advanced-panel');
+            const arrow = document.getElementById('advanced-arrow');
+            
+            if (advancedExpanded) {
+                panel.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                panel.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function handleManual(direction) {
+            console.log('수동 제어:', direction);
+        }
+
+        function updateAngle(type, value) {
+            if (type === 'h') {
+                document.getElementById('angle-h-val').textContent = value + '°';
+            } else {
+                document.getElementById('angle-v-val').textContent = value + '°';
+            }
+        }
+
+        function updateDistance(value) {
+            document.getElementById('distance-val').textContent = value + 'cm';
+        }
+
+        function applyPreset(name) {
+            alert(`"${name}" 프리셋 적용`);
+        }
+
+        // 초기화
+        updateControlUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1010 @@
+[
+  {
+    "file": "WAKE_0549fa0f7f.wav",
+    "speaker_id": null,
+    "similarity": 0.28619250655174255,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_38ed9d1d96.wav",
+    "speaker_id": null,
+    "similarity": 0.7032953500747681,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_7f3e5b460c.wav",
+    "speaker_id": null,
+    "similarity": 0.6760965585708618,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_8792d49a3e.wav",
+    "speaker_id": null,
+    "similarity": 0.4549875855445862,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_a8faa77308.wav",
+    "speaker_id": null,
+    "similarity": 0.3780820071697235,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_b369ac991f.wav",
+    "speaker_id": null,
+    "similarity": 0.7325928211212158,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_ba2ec82a5d.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8323018550872803,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_dfe5dcafe1.wav",
+    "speaker_id": null,
+    "similarity": 0.5340412259101868,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_ed743984d8.wav",
+    "speaker_id": null,
+    "similarity": 0.7368671298027039,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_f5279e8362.wav",
+    "speaker_id": null,
+    "similarity": 0.38549110293388367,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00000.wav",
+    "speaker_id": null,
+    "similarity": 0.431622713804245,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00009.wav",
+    "speaker_id": null,
+    "similarity": 0.6483932137489319,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00010.wav",
+    "speaker_id": null,
+    "similarity": 0.39873242378234863,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00015.wav",
+    "speaker_id": null,
+    "similarity": 0.42544835805892944,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00022.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8569555282592773,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00023.wav",
+    "speaker_id": null,
+    "similarity": 0.6874006986618042,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00024.wav",
+    "speaker_id": null,
+    "similarity": 0.747123122215271,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00028.wav",
+    "speaker_id": null,
+    "similarity": 0.4192239046096802,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00030.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8108208775520325,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00031.wav",
+    "speaker_id": null,
+    "similarity": 0.7228555679321289,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00034.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8490613698959351,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00035.wav",
+    "speaker_id": null,
+    "similarity": 0.6774165034294128,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00039.wav",
+    "speaker_id": null,
+    "similarity": 0.625377893447876,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00042.wav",
+    "speaker_id": null,
+    "similarity": 0.3533284068107605,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00045.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8260862827301025,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00047.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8279087543487549,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00049.wav",
+    "speaker_id": null,
+    "similarity": 0.28401443362236023,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00050.wav",
+    "speaker_id": null,
+    "similarity": 0.7705157995223999,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00056.wav",
+    "speaker_id": null,
+    "similarity": 0.7235251665115356,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00057.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8505877256393433,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00061.wav",
+    "speaker_id": null,
+    "similarity": 0.7579301595687866,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00067.wav",
+    "speaker_id": null,
+    "similarity": 0.5008514523506165,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00069.wav",
+    "speaker_id": null,
+    "similarity": 0.46905064582824707,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00071.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8595600128173828,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00073.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.821479320526123,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00078.wav",
+    "speaker_id": null,
+    "similarity": 0.33664998412132263,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00082.wav",
+    "speaker_id": null,
+    "similarity": 0.7518870830535889,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00084.wav",
+    "speaker_id": null,
+    "similarity": 0.7984110713005066,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00091.wav",
+    "speaker_id": null,
+    "similarity": 0.6946077346801758,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00093.wav",
+    "speaker_id": null,
+    "similarity": 0.444521427154541,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00094.wav",
+    "speaker_id": null,
+    "similarity": 0.3891904652118683,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00096.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8549700975418091,
+    "passed": true,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_vad_00097.wav",
+    "speaker_id": null,
+    "similarity": 0.7518870830535889,
+    "passed": false,
+    "duration": 2.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103702_48000hz_00000.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8079891204833984,
+    "passed": true,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103702_48000hz_00001.wav",
+    "speaker_id": null,
+    "similarity": 0.4213094711303711,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103702_48000hz_00003.wav",
+    "speaker_id": null,
+    "similarity": 0.5476377606391907,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103702_48000hz_00009.wav",
+    "speaker_id": null,
+    "similarity": 0.4367626905441284,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103702_48000hz_00011.wav",
+    "speaker_id": null,
+    "similarity": 0.41344696283340454,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00001.wav",
+    "speaker_id": null,
+    "similarity": 0.36576521396636963,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00005.wav",
+    "speaker_id": null,
+    "similarity": 0.339765340089798,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00006.wav",
+    "speaker_id": null,
+    "similarity": 0.45937788486480713,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00007.wav",
+    "speaker_id": null,
+    "similarity": 0.602570116519928,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00011.wav",
+    "speaker_id": null,
+    "similarity": 0.35604387521743774,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00013.wav",
+    "speaker_id": null,
+    "similarity": 0.40656277537345886,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00019.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.83815598487854,
+    "passed": true,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00023.wav",
+    "speaker_id": null,
+    "similarity": 0.44684627652168274,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00024.wav",
+    "speaker_id": null,
+    "similarity": 0.4347981810569763,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00033.wav",
+    "speaker_id": null,
+    "similarity": 0.4097989797592163,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00038.wav",
+    "speaker_id": null,
+    "similarity": 0.34366440773010254,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00039.wav",
+    "speaker_id": null,
+    "similarity": 0.39179033041000366,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00042.wav",
+    "speaker_id": null,
+    "similarity": 0.43745407462120056,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00046.wav",
+    "speaker_id": null,
+    "similarity": 0.48721808195114136,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00047.wav",
+    "speaker_id": null,
+    "similarity": 0.328637957572937,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00048.wav",
+    "speaker_id": null,
+    "similarity": 0.46523475646972656,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_103938_48000hz_00049.wav",
+    "speaker_id": null,
+    "similarity": 0.3768778443336487,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00005.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8292757272720337,
+    "passed": true,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00008.wav",
+    "speaker_id": null,
+    "similarity": 0.33838745951652527,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00019.wav",
+    "speaker_id": null,
+    "similarity": 0.4446881115436554,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00020.wav",
+    "speaker_id": null,
+    "similarity": 0.44116029143333435,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00022.wav",
+    "speaker_id": null,
+    "similarity": 0.4650617837905884,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00028.wav",
+    "speaker_id": null,
+    "similarity": 0.5092874765396118,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00035.wav",
+    "speaker_id": null,
+    "similarity": 0.5918643474578857,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00036.wav",
+    "speaker_id": null,
+    "similarity": 0.3791120946407318,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00038.wav",
+    "speaker_id": null,
+    "similarity": 0.41225844621658325,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00040.wav",
+    "speaker_id": null,
+    "similarity": 0.36496633291244507,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00041.wav",
+    "speaker_id": null,
+    "similarity": 0.6038872599601746,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00044.wav",
+    "speaker_id": null,
+    "similarity": 0.43093758821487427,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00045.wav",
+    "speaker_id": null,
+    "similarity": 0.4371989369392395,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00056.wav",
+    "speaker_id": null,
+    "similarity": 0.49535220861434937,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00061.wav",
+    "speaker_id": null,
+    "similarity": 0.4224696755409241,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00062.wav",
+    "speaker_id": null,
+    "similarity": 0.4372186064720154,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260127_113407_48000hz_00067.wav",
+    "speaker_id": null,
+    "similarity": 0.7889604568481445,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145429_48000hz_00001.wav",
+    "speaker_id": null,
+    "similarity": 0.7641016244888306,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145429_48000hz_00003.wav",
+    "speaker_id": null,
+    "similarity": 0.6591178774833679,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145429_48000hz_00007.wav",
+    "speaker_id": null,
+    "similarity": 0.7372162938117981,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145429_48000hz_00010.wav",
+    "speaker_id": null,
+    "similarity": 0.4440065920352936,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145429_48000hz_00014.wav",
+    "speaker_id": null,
+    "similarity": 0.7555460929870605,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00007.wav",
+    "speaker_id": null,
+    "similarity": 0.505065381526947,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00009.wav",
+    "speaker_id": null,
+    "similarity": 0.5918631553649902,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00010.wav",
+    "speaker_id": null,
+    "similarity": 0.5553115606307983,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00014.wav",
+    "speaker_id": null,
+    "similarity": 0.6867651343345642,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00015.wav",
+    "speaker_id": null,
+    "similarity": 0.4113125205039978,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00016.wav",
+    "speaker_id": null,
+    "similarity": 0.7929459810256958,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145547_48000hz_00017.wav",
+    "speaker_id": null,
+    "similarity": 0.44049668312072754,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145639_48000hz_00001.wav",
+    "speaker_id": null,
+    "similarity": 0.7077746391296387,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145639_48000hz_00011.wav",
+    "speaker_id": null,
+    "similarity": 0.4568192660808563,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145639_48000hz_00012.wav",
+    "speaker_id": null,
+    "similarity": 0.6398038864135742,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145639_48000hz_00015.wav",
+    "speaker_id": null,
+    "similarity": 0.5779842138290405,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145639_48000hz_00019.wav",
+    "speaker_id": null,
+    "similarity": 0.5489110946655273,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145809_48000hz_00003.wav",
+    "speaker_id": null,
+    "similarity": 0.520281195640564,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145809_48000hz_00006.wav",
+    "speaker_id": null,
+    "similarity": 0.4932912588119507,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145809_48000hz_00008.wav",
+    "speaker_id": null,
+    "similarity": 0.557518720626831,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145809_48000hz_00009.wav",
+    "speaker_id": null,
+    "similarity": 0.5809113383293152,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145809_48000hz_00014.wav",
+    "speaker_id": null,
+    "similarity": 0.4926043748855591,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_145809_48000hz_00017.wav",
+    "speaker_id": null,
+    "similarity": 0.5246442556381226,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_163351_48000hz_00005.wav",
+    "speaker_id": null,
+    "similarity": 0.7779710292816162,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_164500_48000hz_00001.wav",
+    "speaker_id": null,
+    "similarity": 0.3817785382270813,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_164500_48000hz_00004.wav",
+    "speaker_id": null,
+    "similarity": 0.6221820712089539,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_164500_48000hz_00005.wav",
+    "speaker_id": null,
+    "similarity": 0.4203190803527832,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_164500_48000hz_00008.wav",
+    "speaker_id": null,
+    "similarity": 0.4843345284461975,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_164500_48000hz_00012.wav",
+    "speaker_id": null,
+    "similarity": 0.3823626935482025,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_170504_48000hz_00008.wav",
+    "speaker_id": null,
+    "similarity": 0.4780563712120056,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260128_170504_48000hz_00010.wav",
+    "speaker_id": null,
+    "similarity": 0.3231620192527771,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00001.wav",
+    "speaker_id": null,
+    "similarity": 0.4514358639717102,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00004.wav",
+    "speaker_id": null,
+    "similarity": 0.40906867384910583,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00007.wav",
+    "speaker_id": null,
+    "similarity": 0.36649882793426514,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00009.wav",
+    "speaker_id": null,
+    "similarity": 0.4207870364189148,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00010.wav",
+    "speaker_id": null,
+    "similarity": 0.40308961272239685,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00013.wav",
+    "speaker_id": null,
+    "similarity": 0.40434589982032776,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00018.wav",
+    "speaker_id": null,
+    "similarity": 0.5821748375892639,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00021.wav",
+    "speaker_id": null,
+    "similarity": 0.4126449227333069,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00028.wav",
+    "speaker_id": null,
+    "similarity": 0.4063121974468231,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00029.wav",
+    "speaker_id": null,
+    "similarity": 0.4214402139186859,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_104953_48000hz_00035.wav",
+    "speaker_id": null,
+    "similarity": 0.39039346575737,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00002.wav",
+    "speaker_id": null,
+    "similarity": 0.7257087230682373,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00003.wav",
+    "speaker_id": null,
+    "similarity": 0.7586368322372437,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00007.wav",
+    "speaker_id": null,
+    "similarity": 0.7207075357437134,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00009.wav",
+    "speaker_id": null,
+    "similarity": 0.6611807942390442,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00021.wav",
+    "speaker_id": null,
+    "similarity": 0.4376536011695862,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00025.wav",
+    "speaker_id": null,
+    "similarity": 0.4149361848831177,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00026.wav",
+    "speaker_id": null,
+    "similarity": 0.3748709559440613,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00028.wav",
+    "speaker_id": null,
+    "similarity": 0.3809579908847809,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00035.wav",
+    "speaker_id": null,
+    "similarity": 0.460710734128952,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_110633_48000hz_00037.wav",
+    "speaker_id": null,
+    "similarity": 0.5222587585449219,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00008.wav",
+    "speaker_id": null,
+    "similarity": 0.36780619621276855,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00009.wav",
+    "speaker_id": "9984cae4-effa-48cc-93f2-78bb96a16163",
+    "similarity": 0.8001470565795898,
+    "passed": true,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00010.wav",
+    "speaker_id": null,
+    "similarity": 0.4239565134048462,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00014.wav",
+    "speaker_id": null,
+    "similarity": 0.4228750467300415,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00022.wav",
+    "speaker_id": null,
+    "similarity": 0.38781821727752686,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00023.wav",
+    "speaker_id": null,
+    "similarity": 0.36626797914505005,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00027.wav",
+    "speaker_id": null,
+    "similarity": 0.5963817238807678,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00029.wav",
+    "speaker_id": null,
+    "similarity": 0.44656461477279663,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00031.wav",
+    "speaker_id": null,
+    "similarity": 0.36051321029663086,
+    "passed": false,
+    "duration": 1.0
+  },
+  {
+    "file": "WAKE_WAKE_20260130_112219_48000hz_00034.wav",
+    "speaker_id": null,
+    "similarity": 0.5490398406982422,
+    "passed": false,
+    "duration": 1.0
+  }
+]

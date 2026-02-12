@@ -1,0 +1,17 @@
+segments/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+
+venv_crop/
+venv_train/
+testvenv/

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARVIS - Smart Assistance Robot</title>
+    <link rel="stylesheet" href="sarvis_mock.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="screen-container">
+            <!-- Login Initial Screen -->
+            <div class="screen login-screen active" id="loginInitial">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">Smart Assistance Robot</div>
+            </div>
+            
+            <button class="btn btn-primary" id="loginFaceBtn">👤 얼굴로 로그인</button>
+            <button class="btn btn-outline" id="loginFormBtn">🔐 아이디로 로그인</button>
+            
+            <div class="divider">또는</div>
+            
+            <button class="btn btn-success" id="signupInitialBtn">✨ 회원가입</button>
+        </div>
+
+        <!-- Login Face Scan -->
+        <div class="screen login-screen" id="loginFace">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">얼굴 인식</div>
+            </div>
+            
+            <!-- 기기 연결 대기 -->
+            <div class="card device-waiting-card">
+                <div class="device-status" id="loginDeviceStatus">
+                    <div class="status-icon">🔌</div>
+                    <div class="status-text">기기 연결 대기중...</div>
+                </div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan scanning" id="loginFaceScan">
+                    <div class="face-icon">👤</div>
+                </div>
+                <div class="status-message" id="loginFaceStatus">기기 연결 후 얼굴을 스캔합니다...</div>
+                <div class="status-detail" id="loginFaceDetail">SARVIS 기기를 케이블로 연결해주세요</div>
+            </div>
+            
+            <button class="btn btn-outline" id="backToLoginInitial">뒤로</button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="screen login-screen" id="loginForm">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">로그인</div>
+            </div>
+            
+            <!-- 기기 연결 대기 -->
+            <div class="card device-waiting-card">
+                <div class="device-status" id="loginFormDeviceStatus">
+                    <div class="status-icon">🔌</div>
+                    <div class="status-text">기기 연결 대기중...</div>
+                </div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>아이디</label>
+                    <input type="text" class="form-control" id="loginUsername" placeholder="영문/숫자 5-20자">
+                    <div class="form-hint info" id="loginUsernameHint">아이디 형식: 영문/숫자 5-20자</div>
+                </div>
+                <div class="form-group">
+                    <label>비밀번호</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="영문, 숫자, 특수문자 8-20자">
+                    <div class="form-hint info" id="loginPasswordHint">비밀번호 형식: 영문, 숫자, 특수문자 포함 8-20자</div>
+                </div>
+                
+                <div class="form-help-links">
+                    <button class="btn-link" id="findIdBtn">아이디 찾기</button>
+                    <span class="divider">|</span>
+                    <button class="btn-link" id="findPasswordBtn">비밀번호 찾기</button>
+                </div>
+                
+                <button class="btn btn-primary" id="loginSubmitBtn">로그인</button>
+                <button class="btn btn-outline" id="backToLoginFromForm">뒤로</button>
+            </div>
+        </div>
+
+        <!-- Signup Initial -->
+        <div class="screen login-screen" id="signupInitial">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">회원가입</div>
+            </div>
+            
+            <button class="btn btn-primary" id="signupInfoBtn">📝 정보 입력 시작</button>
+            <button class="btn btn-outline" id="backToLoginFromSignup">뒤로</button>
+        </div>
+
+        <!-- Signup Info (Step 1) -->
+        <div class="screen login-screen" id="signupInfo">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">회원 정보 입력</div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>닉네임</label>
+                    <input type="text" class="form-control" id="signupNickname" placeholder="2-20자">
+                    <div class="form-hint info">닉네임: 2-20자 (한글, 영문, 숫자 가능)</div>
+                </div>
+                <div class="form-group">
+                    <label>아이디</label>
+                    <div class="input-with-button">
+                        <input type="text" class="form-control" id="signupUsername" placeholder="영문/숫자 5-20자">
+                        <button class="btn btn-outline btn-sm" id="checkIdBtn">중복확인</button>
+                    </div>
+                    <div class="form-hint" id="idCheckResult"></div>
+                </div>
+                <div class="form-group">
+                    <label>이메일</label>
+                    <div class="email-input-row">
+                        <input type="text" class="form-control email-id-input" id="signupEmailId" placeholder="이메일 아이디">
+                        <span class="email-at">@</span>
+                        <select class="form-control email-domain-select" id="signupEmailDomain">
+                            <option value="">직접 입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                        </select>
+                        <input type="text" class="form-control email-domain-input" id="signupEmailDomainCustom" placeholder="도메인 입력" style="display: none;">
+                    </div>
+                    <div class="input-with-button" style="margin-top: 8px;">
+                        <button class="btn btn-outline btn-sm email-verify-btn" id="checkEmailBtn">중복확인</button>
+                        <button class="btn btn-outline btn-sm email-verify-btn" id="sendEmailCodeBtn" style="display: none;">인증번호 발송</button>
+                    </div>
+                    <div class="form-hint" id="emailCheckResult"></div>
+                </div>
+                <div class="form-group" id="emailCodeGroup" style="display: none;">
+                    <label>인증번호</label>
+                    <div class="input-with-button">
+                        <input type="text" class="form-control" id="emailCodeInput" placeholder="6자리 코드 입력" maxlength="6">
+                        <button class="btn btn-primary btn-sm" id="verifyEmailBtn" disabled>인증하기</button>
+                    </div>
+                    <div class="form-hint" id="verifyResult"></div>
+                </div>
+                <div class="form-group">
+                    <label>비밀번호</label>
+                    <input type="password" class="form-control" id="signupPassword" placeholder="영문, 숫자, 특수문자 8-20자">
+                    <div class="form-hint info">영문, 숫자, 특수문자를 포함한 8-20자</div>
+                </div>
+                <div class="form-group">
+                    <label>비밀번호 확인</label>
+                    <input type="password" class="form-control" id="signupPasswordConfirm" placeholder="비밀번호 확인">
+                    <div class="form-hint" id="passwordMatchResult"></div>
+                </div>
+                
+                <div class="agreement-section">
+                    <label class="agreement-item">
+                        <input type="checkbox" id="agreeTerms">
+                        <span class="agreement-text">[필수] 서비스 이용약관에 동의합니다</span>
+                        <button class="btn-link" id="viewTermsBtn">약관 보기</button>
+                    </label>
+                    <label class="agreement-item">
+                        <input type="checkbox" id="agreePrivacy">
+                        <span class="agreement-text">[필수] 개인정보 수집 및 이용에 동의합니다</span>
+                        <button class="btn-link" id="viewPrivacyBtn">약관 보기</button>
+                    </label>
+                    <label class="agreement-item">
+                        <input type="checkbox" id="agreeSensitive">
+                        <span class="agreement-text">[필수] 민감정보(얼굴/음성 벡터) 수집 및 이용에 동의합니다</span>
+                        <button class="btn-link" id="viewSensitiveBtn">약관 보기</button>
+                    </label>
+                </div>
+                
+                <button class="btn btn-success" id="signupInfoNextBtn" disabled>정보 입력 완료</button>
+                <button class="btn btn-outline" id="backToSignupInitialFromInfo">처음으로</button>
+            </div>
+        </div>
+
+        <!-- Device Connection (Step 2) -->
+        <div class="screen login-screen" id="signupDevice">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">기기 연결</div>
+            </div>
+            
+            <div class="card onboarding-card">
+                <div class="onboarding-icon">🔌</div>
+                <div class="onboarding-title">기기 연결</div>
+                <div class="onboarding-desc">
+                    SARVIS 기기와 유선 케이블로 연결해주세요.<br>
+                    연결하면 자동으로 기기가 감지됩니다.
+                </div>
+                
+                <div class="form-group">
+                    <label>기기 명칭</label>
+                    <input type="text" class="form-control" id="signupDeviceAlias" placeholder="예: 거실로봇">
+                </div>
+                
+                <div class="device-status" id="signupDeviceStatus">
+                    <div class="status-icon">🔍</div>
+                    <div class="status-text">기기 연결 대기중...</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-success" id="signupDeviceNextBtn">얼굴 등록하기</button>
+            <button class="btn btn-outline" id="cancelSignupBtn">가입 취소</button>
+        </div>
+
+        <!-- Signup Face (Step 3) -->
+        <div class="screen login-screen" id="signupFace">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">얼굴 등록</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan scanning" id="signupFaceScan">
+                    <div class="face-icon">👤</div>
+                </div>
+                <div class="status-message" id="signupFaceStatus">기기에 정보를 전송 중...</div>
+                <div class="status-detail" id="signupFaceDetail">잠시만 기다려주세요</div>
+            </div>
+            
+            <button class="btn btn-outline" id="cancelSignupBtnFromFace">가입 취소</button>
+        </div>
+
+        <!-- Signup Voice (Step 4) -->
+        <div class="screen login-screen" id="signupVoice">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">음성 등록</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan" id="signupVoiceScan" style="border-color: var(--success);">
+                    <div class="face-icon">🎤</div>
+                </div>
+                <div class="status-message" id="signupVoiceStatus">음성을 등록해주세요</div>
+                <div class="status-detail" id="signupVoiceDetail"></div>
+                
+                <!-- 음성 등록 진행률 표시 -->
+                <div class="voice-progress" id="voiceProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="voiceProgressFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text" id="voiceProgressText">0%</div>
+                </div>
+            </div>
+            
+            <div style="width: 100%;">
+                <button class="btn btn-success" id="startVoiceBtn">🎤 음성 등록 시작</button>
+                <button class="btn btn-outline" id="cancelSignupVoiceBtn">등록 취소</button>
+                <button class="btn btn-outline" id="skipVoiceBtn">건너뛰기</button>
+            </div>
+        </div>
+
+        <!-- Terms Modal -->
+        <div class="modal-overlay" id="termsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">서비스 이용약관</h3>
+                    <button class="modal-close" id="closeTermsModal">✕</button>
+                </div>
+                <div class="modal-body">
+                    <h4>제1조 목적</h4>
+                    <p>본 약관은 SARVIS 서비스의 이용조건 및 절차를 규정합니다.</p>
+                    <h4>제2조 서비스의 이용</h4>
+                    <p>이용자는 본 서비스를 통해 로봇 제어 기능을 이용할 수 있습니다.</p>
+                    <h4>제3조 이용자의 의무</h4>
+                    <p>이용자는 서비스 이용 시 관련 법령을 준수해야 합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Modal -->
+        <div class="modal-overlay" id="privacyModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">개인정보 수집 및 이용</h3>
+                    <button class="modal-close" id="closePrivacyModal">✕</button>
+                </div>
+                <div class="modal-body">
+                    <h4>1. 수집하는 개인정보 항목</h4>
+                    <p>- 이메일, 닉네임, 아이디</p>
+                    <h4>2. 수집 목적</h4>
+                    <p>- 서비스 제공 및 회원 관리</p>
+                    <h4>3. 보유 기간</h4>
+                    <p>- 회원 탈퇴 시까지</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sensitive Info Modal -->
+        <div class="modal-overlay" id="sensitiveModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">민감정보 수집 및 이용</h3>
+                    <button class="modal-close" id="closeSensitiveModal">✕</button>
+                </div>
+                <div class="modal-body">
+                    <h4>1. 수집하는 민감정보</h4>
+                    <p>- 얼굴 벡터 정보, 음성 벡터 정보</p>
+                    <h4>2. 수집 목적</h4>
+                    <p>- 사용자 식별 및 로봇 추적 기능 제공</p>
+                    <h4>3. 보유 기간</h4>
+                    <p>- 회원 탈퇴 시까지</p>
+                    <h4>4. 이용에 대한 동의 거부 권리</h4>
+                    <p>- 동의 거부 시 서비스 이용이 제한될 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Screen -->
+        <div class="screen" id="appScreen">
+            <div class="app-header">
+                <div class="app-title">SARVIS</div>
+                <div class="header-right">
+                    <div class="user-badge" id="userBadge">게스트</div>
+                    <div class="menu-btn" id="menuBtn">⋮</div>
+                </div>
+            </div>
+            
+            <div class="app-content">
+                <!-- Home Tab -->
+                <div class="tab-content active" id="homeTab">
+                    <div class="status-box idle" id="robotStatus">
+                        <div class="status-dot"></div>
+                        <span id="robotStatusText">현재 상태: 대기 중</span>
+                    </div>
+                    
+                    <div class="voice-card listening" id="voiceCard">
+                        <div class="voice-header">
+                            <div class="voice-label">
+                                <span>🎤</span>
+                                <span>음성 명령</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="voiceToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="voice-indicator">
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                        </div>
+                        
+                    <div class="voice-text" id="voiceText">듣고 있습니다...</div>
+                    </div>
+                    
+                    <!-- 사용자 추적 토글 -->
+                    <div class="tracking-toggle-card">
+                        <div class="toggle-label">
+                            <span class="toggle-icon">👀</span>
+                            <span class="toggle-text">사용자 추적</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="trackingToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <!-- 빠른 제어 섹션 -->
+                    <div class="quick-control-section">
+                    <!-- 빠른 명령 구역 -->
+                    <div class="quick-commands-row">
+                        <button class="quick-card secondary" id="moveAsideBtn">
+                            <span class="quick-icon">🙈</span>
+                            <span class="quick-text">시야 밖으로</span>
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Manual Control Tab -->
+                <div class="tab-content" id="manualTab">
+                    <div class="control-panel">
+                        <!-- 1. 위치 이동 -->
+                        <div>
+                            <div class="section-title">위치 이동</div>
+                            <div class="position-control">
+                                <button class="btn-pos up" id="btnUp"><i class="fa-solid fa-arrow-up"></i></button>
+                                <button class="btn-pos left" id="btnLeft"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button class="btn-pos down" id="btnDown"><i class="fa-solid fa-arrow-down"></i></button>
+                                <button class="btn-pos right" id="btnRight"><i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- 2. 거리 조절 -->
+                        <div>
+                            <div class="section-title">거리 조절</div>
+                            <div class="distance-control">
+                                <span class="slider-label">가까이</span>
+                                <input type="range" id="distanceSlider" min="0" max="100" value="50">
+                                <span class="slider-label">멀리</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. 회전 제어 -->
+                        <div>
+                            <div class="section-title">
+                                회전 제어
+                                <span class="tooltip" title="Tilt: 상하 회전, HAS: 좌우 회전">?</span>
+                            </div>
+                            <div class="rotation-control">
+                                <div class="rotation-row">
+                                    <span class="rotation-label">Pitch:</span>
+                                    <button class="btn-rot" id="btnTiltUp"><i class="fa-solid fa-arrow-turn-up"></i> Up</button>
+                                    <button class="btn-rot" id="btnTiltDown"><i class="fa-solid fa-arrow-turn-down"></i> Down</button>
+                                </div>
+                                <div class="rotation-row">
+                                    <span class="rotation-label">Yaw:</span>
+                                    <button class="btn-rot" id="btnYawLeft"><i class="fa-solid fa-arrow-turn-right fa-flip-vertical fa-flip-horizontal"></i> Left</button>
+                                    <button class="btn-rot" id="btnYawRight"><i class="fa-solid fa-arrow-turn-right fa-flip-vertical fa-flip-horizontal"></i> Right</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. 상태 표시 -->
+                        <div>
+                            <div class="section-title">Status</div>
+                            <div class="status-panel">
+                                <div class="status-grid">
+                                    <div class="status-item"><span>X:</span> <span class="status-value" id="statusX">0</span></div>
+                                    <div class="status-item"><span>Y:</span> <span class="status-value" id="statusY">0</span></div>
+                                    <div class="status-item"><span>Pitch:</span> <span class="status-value" id="statusPitch">0°</span></div>
+                                    <div class="status-item"><span>Yaw:</span> <span class="status-value" id="statusYaw">0°</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. 하단 버튼 -->
+                    <div class="footer-btns">
+                        <button class="btn-footer btn-save" id="savePresetBtn"><i class="fa-solid fa-floppy-disk"></i> 기억하기</button>
+                        <button class="btn-footer btn-reset" id="resetPresetBtn"><i class="fa-solid fa-rotate-right"></i> 초기화</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Tab Navigation -->
+            <div class="bottom-tabs">
+                <button class="tab-item active" data-tab="homeTab">
+                    <span class="tab-icon">🏠</span>
+                    <span class="tab-label">홈</span>
+                </button>
+                <button class="tab-item" data-tab="manualTab">
+                    <span class="tab-icon">🎮</span>
+                    <span class="tab-label">제어</span>
+                </button>
+            </div>
+            
+            <div class="app-footer">
+                <div class="footer-content">
+                    <p class="copyright">© 2026 Team S.A.R.V.I.S. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">이용약관</a>
+                        <span class="footer-divider">|</span>
+                        <a href="#" class="footer-link">개인정보 처리방침</a>
+                        <span class="footer-divider">|</span>
+                        <a href="https://lab.ssafy.com/s14-webmobile3-sub1/S14P11A104" class="footer-link" target="_blank">Gitlab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Overlay -->
+        <div class="menu-overlay" id="menuOverlay">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <div class="menu-title">메뉴</div>
+                    <div class="menu-close" id="menuClose">✕</div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-section-title">사용자</div>
+                    <button class="menu-item" id="resetFaceBtn">👤 얼굴 재설정</button>
+                    <button class="menu-item" id="resetVoiceBtn">🎤 음성 재설정</button>
+                    <button class="menu-item danger" id="deleteAccountBtn">🗑️ 회원 탈퇴</button>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-section-title">기기</div>
+                    <button class="menu-item" id="deviceInfoBtn">🔌 기기 정보</button>
+                </div>
+                
+                <div class="menu-section">
+                    <button class="menu-item danger" id="logoutBtn">🚪 로그아웃</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Find ID Screen -->
+        <div class="screen login-screen" id="findIdScreen">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">아이디 찾기</div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>이메일</label>
+                    <div class="email-input-row">
+                        <input type="text" class="form-control email-id-input" id="findIdEmailId" placeholder="이메일 아이디">
+                        <span class="email-at">@</span>
+                        <select class="form-control email-domain-select" id="findIdEmailDomain">
+                            <option value="">직접 입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                        </select>
+                        <input type="text" class="form-control email-domain-input" id="findIdEmailDomainCustom" placeholder="도메인 입력" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="form-group" id="findIdCodeGroup" style="display: none;">
+                    <label>인증번호</label>
+                    <div class="input-with-button">
+                        <input type="text" class="form-control" id="findIdCodeInput" placeholder="6자리 코드 입력" maxlength="6">
+                        <button class="btn btn-primary btn-sm" id="verifyFindIdBtn" disabled>인증하기</button>
+                    </div>
+                </div>
+                
+                <button class="btn btn-success" id="sendFindIdCodeBtn" style="display: none;">인증번호 발송</button>
+                <button class="btn btn-success" id="verifyFindIdCompleteBtn" style="display: none;">아이디 찾기 완료</button>
+                <button class="btn btn-outline" id="backToLoginFromFindId">뒤로</button>
+            </div>
+        </div>
+
+        <!-- Find Password Screen -->
+        <div class="screen login-screen" id="findPasswordScreen">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">비밀번호 재설정</div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>이메일</label>
+                    <div class="email-input-row">
+                        <input type="text" class="form-control email-id-input" id="findPasswordEmailId" placeholder="이메일 아이디">
+                        <span class="email-at">@</span>
+                        <select class="form-control email-domain-select" id="findPasswordEmailDomain">
+                            <option value="">직접 입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                        </select>
+                        <input type="text" class="form-control email-domain-input" id="findPasswordEmailDomainCustom" placeholder="도메인 입력" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="form-group" id="findPasswordCodeGroup" style="display: none;">
+                    <label>인증번호</label>
+                    <div class="input-with-button">
+                        <input type="text" class="form-control" id="findPasswordCodeInput" placeholder="6자리 코드 입력" maxlength="6">
+                        <button class="btn btn-primary btn-sm" id="verifyFindPasswordBtn" disabled>인증하기</button>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="newPasswordGroup" style="display: none;">
+                    <label>새 비밀번호</label>
+                    <input type="password" class="form-control" id="newPasswordInput" placeholder="영문, 숫자, 특수문자 8-20자">
+                </div>
+                <div class="form-group" id="newPasswordConfirmGroup" style="display: none;">
+                    <label>새 비밀번호 확인</label>
+                    <input type="password" class="form-control" id="newPasswordConfirmInput" placeholder="비밀번호 확인">
+                </div>
+                
+                <button class="btn btn-success" id="sendFindPasswordCodeBtn" style="display: none;">인증번호 발송</button>
+                <button class="btn btn-success" id="resetPasswordBtn" style="display: none;">비밀번호 재설정</button>
+                <button class="btn btn-outline" id="backToLoginFromFindPassword">뒤로</button>
+            </div>
+        </div>
+
+        <!-- User Reset Face -->
+        <div class="screen login-screen" id="resetFace">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">얼굴 재설정</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan scanning" id="resetFaceScan">
+                    <div class="face-icon">👤</div>
+                </div>
+                <div class="status-message" id="resetFaceStatus">기기에 정보를 전송 중...</div>
+                <div class="status-detail" id="resetFaceDetail">잠시만 기다려주세요</div>
+            </div>
+    <button class="btn btn-outline" id="cancelResetFaceBtn">재등록 취소</button>
+        </div>
+
+        <!-- User Reset Voice -->
+        <div class="screen login-screen" id="resetVoice">
+            <div class="logo-section">
+                <div class="logo">SARVIS</div>
+                <div class="tagline">음성 재설정</div>
+            </div>
+            
+            <div class="face-scan-container">
+                <div class="face-scan" id="resetVoiceScan" style="border-color: var(--success);">
+                    <div class="face-icon">🎤</div>
+                </div>
+                <div class="status-message" id="resetVoiceStatus">음성을 재등록해주세요</div>
+                <div class="status-detail" id="resetVoiceDetail"></div>
+            </div>
+            
+            <div style="width: 100%;">
+                <button class="btn btn-success" id="startResetVoiceBtn">🎤 음성 재등록 시작</button>
+                <button class="btn btn-outline" id="cancelResetVoiceBtn">재등록 취소</button>
+            </div>
+        </div>
+
+        <!-- Device Info -->
+        <div class="screen" id="deviceInfoScreen">
+            <div class="app-header">
+                <div class="back-btn" id="backFromDeviceInfo">←</div>
+                <div class="app-title">기기 정보</div>
+                <div class="header-right"></div>
+            </div>
+            
+            <div class="app-content">
+                <div class="card device-card">
+                    <div class="device-icon">🤖</div>
+                    <div class="device-name" id="deviceName">거실로봇</div>
+                    <div class="device-type" id="deviceType">SARVIS-Pro</div>
+                    
+                    <div class="device-info-list">
+                        <div class="device-info-item">
+                            <span class="info-label">Serial Number</span>
+                            <span class="info-value" id="serialNumber">SN-00123456789</span>
+                        </div>
+                        <div class="device-info-item">
+                            <span class="info-label">펌웨어 버전</span>
+                            <span class="info-value" id="firmwareVersion">1.0.0</span>
+                        </div>
+                        <div class="device-info-item">
+                            <span class="info-label">마지막 연결</span>
+                            <span class="info-value" id="lastConnected">2026-01-20 15:00:00</span>
+                        </div>
+                        <div class="device-info-item">
+                            <span class="info-label">앱 버전</span>
+                            <span class="info-value" id="appVersion">1.0.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="app-footer">
+                <div class="footer-content">
+                    <p class="copyright">© 2026 Team S.A.R.V.I.S. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">이용약관</a>
+                        <span class="footer-divider">|</span>
+                        <a href="#" class="footer-link">개인정보 처리방침</a>
+                        <span class="footer-divider">|</span>
+                        <a href="https://lab.ssafy.com/s14-webmobile3-sub1/S14P11A104" class="footer-link" target="_blank">Gitlab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="sarvis_mock.js"></script>
+</body>
+</html>
